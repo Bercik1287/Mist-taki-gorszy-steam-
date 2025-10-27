@@ -1,0 +1,34 @@
+@model mist.Models.Game
+@{
+    ViewData["Title"] = "Usuń grę: " + Model.Title;
+}
+
+<div class="container">
+    <h1>Usuń grę</h1>
+
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Czy na pewno chcesz usunąć tę grę?</h4>
+        <p>Tej operacji nie można cofnąć.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">@Model.Title</h3>
+            <p class="card-text"><strong>Developer:</strong> @Model.Developer</p>
+            <p class="card-text"><strong>Wydawca:</strong> @Model.Publisher</p>
+            <p class="card-text"><strong>Gatunek:</strong> @Model.Genre</p>
+            <p class="card-text"><strong>Cena:</strong> @Model.Price.ToString("C")</p>
+            <p class="card-text"><strong>Data wydania:</strong> @Model.ReleaseDate.ToString("dd.MM.yyyy")</p>
+        </div>
+    </div>
+
+    <form asp-action="Delete" method="post" class="mt-4">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="d-grid gap-2 d-md-flex">
+            <button type="submit" class="btn btn-danger">Usuń</button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Anuluj</a>
+        </div>
+    </form>
+</div>
