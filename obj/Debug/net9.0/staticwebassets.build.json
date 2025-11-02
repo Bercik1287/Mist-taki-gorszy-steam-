@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "y+2xt2W2DDUnouaZlj8H+tZ9CmA/tAlZP3gTgojT2/8=",
+  "Hash": "HueUfddEIuv0Ixapk7IlquoT4KWHwIUc54tjD6wyPLA=",
   "Source": "mist",
   "BasePath": "_content/mist",
   "Mode": "Default",
@@ -1443,6 +1443,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/cyberpunk.jpg",
+      "SourceId": "mist",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/shirokitsu/siszarp/mist/wwwroot/",
+      "BasePath": "_content/mist",
+      "RelativePath": "images/cyberpunk#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zer58rmpxp",
+      "Integrity": "Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/cyberpunk.jpg"
+    },
+    {
+      "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/witcher3.jpg",
+      "SourceId": "mist",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/shirokitsu/siszarp/mist/wwwroot/",
+      "BasePath": "_content/mist",
+      "RelativePath": "images/witcher3#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "gh3huq7555",
+      "Integrity": "HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/witcher3.jpg"
     },
     {
       "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/js/site.js",
@@ -3320,6 +3362,170 @@
         {
           "Name": "integrity",
           "Value": "sha256-ZOjKHXnMPQC6F6zd9RBOa1+tLZtU6Qj7PiAopMxtp8c="
+        }
+      ]
+    },
+    {
+      "Route": "images/cyberpunk.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/cyberpunk.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "38717"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:09:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE="
+        }
+      ]
+    },
+    {
+      "Route": "images/cyberpunk.zer58rmpxp.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/cyberpunk.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "38717"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:09:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zer58rmpxp"
+        },
+        {
+          "Name": "label",
+          "Value": "images/cyberpunk.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE="
+        }
+      ]
+    },
+    {
+      "Route": "images/witcher3.gh3huq7555.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/witcher3.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:36:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gh3huq7555"
+        },
+        {
+          "Name": "label",
+          "Value": "images/witcher3.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik="
+        }
+      ]
+    },
+    {
+      "Route": "images/witcher3.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/witcher3.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:36:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik="
         }
       ]
     },
@@ -21310,7 +21516,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21363,7 +21569,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21400,7 +21606,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21447,7 +21653,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21500,7 +21706,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21537,7 +21743,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21584,7 +21790,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21645,7 +21851,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21690,7 +21896,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21745,7 +21951,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21806,7 +22012,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -21851,7 +22057,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 27 Oct 2025 12:04:59 GMT"
+          "Value": "Fri, 31 Oct 2025 21:43:02 GMT"
         },
         {
           "Name": "Cache-Control",

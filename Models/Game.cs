@@ -24,7 +24,7 @@ namespace mist.Models
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
         public bool IsActive { get; set; } = true;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } // USUŃ = DateTime.Now
 
         // Relacje
         public virtual ICollection<User> Owners { get; set; }
