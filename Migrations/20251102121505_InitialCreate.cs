@@ -158,8 +158,8 @@ namespace mist.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Developer", "Genre", "ImageUrl", "IsActive", "Price", "Publisher", "ReleaseDate", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc), "Futurystyczna gra RPG w otwartym świecie Night City", "CD Projekt Red", "RPG", "/images/cyberpunk.jpg", true, 199.99m, "CD Projekt", new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cyberpunk 2077" },
-                    { 2, new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc), "Epicka przygoda Geralta z Rivii", "CD Projekt Red", "RPG", "/images/witcher3.jpg", true, 129.99m, "CD Projekt", new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "The Witcher 3" }
+                    { 1, new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc), "Futurystyczna gra RPG w otwartym świecie Day City", "DVD Projekt Blue", "RPG", "/images/cyberpunk.jpg", true, 199.99m, "DVD Projekt", new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cyberpunk 2137" },
+                    { 2, new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc), "Epicka przygoda Gerwazego z Rumunii", "DVD Projekt Blue", "RPG", "/images/witcher3.jpg", true, 129.99m, "DVD Projekt", new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wicher 3 Dziki Zgon" }
                 });
 
             migrationBuilder.CreateIndex(

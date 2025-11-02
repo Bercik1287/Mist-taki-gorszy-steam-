@@ -135,29 +135,29 @@ namespace mist.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc),
-                            Description = "Futurystyczna gra RPG w otwartym świecie Night City",
-                            Developer = "CD Projekt Red",
+                            Description = "Futurystyczna gra RPG w otwartym świecie Day City",
+                            Developer = "DVD Projekt Blue",
                             Genre = "RPG",
                             ImageUrl = "/images/cyberpunk.jpg",
                             IsActive = true,
                             Price = 199.99m,
-                            Publisher = "CD Projekt",
+                            Publisher = "DVD Projekt",
                             ReleaseDate = new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Cyberpunk 2077"
+                            Title = "Cyberpunk 2137"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc),
-                            Description = "Epicka przygoda Geralta z Rivii",
-                            Developer = "CD Projekt Red",
+                            Description = "Epicka przygoda Gerwazego z Rumunii",
+                            Developer = "DVD Projekt Blue",
                             Genre = "RPG",
                             ImageUrl = "/images/witcher3.jpg",
                             IsActive = true,
                             Price = 129.99m,
-                            Publisher = "CD Projekt",
+                            Publisher = "DVD Projekt",
                             ReleaseDate = new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Witcher 3"
+                            Title = "Wicher 3 Dziki Zgon"
                         });
                 });
 

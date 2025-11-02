@@ -66,11 +66,11 @@ namespace mist.Data
                 new Game
                 {
                     Id = 1,
-                    Title = "Cyberpunk 2077",
-                    Description = "Futurystyczna gra RPG w otwartym świecie Night City",
+                    Title = "Cyberpunk 2137",
+                    Description = "Futurystyczna gra RPG w otwartym świecie Day City",
                     Price = 199.99m,
-                    Developer = "CD Projekt Red",
-                    Publisher = "CD Projekt",
+                    Developer = "DVD Projekt Blue",
+                    Publisher = "DVD Projekt",
                     Genre = "RPG",
                     ReleaseDate = new DateTime(2020, 12, 10),
                     ImageUrl = "/images/cyberpunk.jpg",
@@ -80,11 +80,11 @@ namespace mist.Data
                 new Game
                 {
                     Id = 2,
-                    Title = "The Witcher 3",
-                    Description = "Epicka przygoda Geralta z Rivii",
+                    Title = "Wichur 3 Dziki Zgon",
+                    Description = "Epicka przygoda Gerwazego z Rumunii",
                     Price = 129.99m,
-                    Developer = "CD Projekt Red",
-                    Publisher = "CD Projekt",
+                    Developer = "DVD Projekt Blue",
+                    Publisher = "DVD Projekt",
                     Genre = "RPG",
                     ReleaseDate = new DateTime(2015, 5, 19),
                     ImageUrl = "/images/witcher3.jpg",

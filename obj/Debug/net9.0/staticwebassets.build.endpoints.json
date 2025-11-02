@@ -599,6 +599,170 @@
       ]
     },
     {
+      "Route": "images/cyberpunk.jpg",
+      "AssetFile": "images/cyberpunk.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "38717"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:09:01 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE="
+        }
+      ]
+    },
+    {
+      "Route": "images/cyberpunk.zer58rmpxp.jpg",
+      "AssetFile": "images/cyberpunk.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "38717"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:09:01 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zer58rmpxp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE="
+        },
+        {
+          "Name": "label",
+          "Value": "images/cyberpunk.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "images/witcher3.gh3huq7555.jpg",
+      "AssetFile": "images/witcher3.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:36:27 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gh3huq7555"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik="
+        },
+        {
+          "Name": "label",
+          "Value": "images/witcher3.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "images/witcher3.jpg",
+      "AssetFile": "images/witcher3.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "31973"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 12:36:27 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HJ6kqkX3Rij74ChQnB557Xs8gimHW51Zr5H2/UaP0ik="
+        }
+      ]
+    },
+    {
       "Route": "js/site.fr7q2aak1r.js",
       "AssetFile": "js/site.js.gz",
       "Selectors": [
