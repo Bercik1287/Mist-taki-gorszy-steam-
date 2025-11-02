@@ -4,21 +4,21 @@
 
 <div class="text-center">
     <h1 class="display-4">Witaj w mist!</h1>
-    <p class="lead">Twoja platforma do odkrywania i zakupu najlepszych gier</p>
+    <p class="lead">Taki steam tylko gorszy</p>
     
     <div class="row mt-5">
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">🎮 Bogaty katalog</h5>
-                    <p class="card-text">Odkryj setki gier z różnych gatunków i platform</p>
+                    <h5 class="card-title">🎮 Bogaty katalog (całe dwie gry)</h5>
+                    <p class="card-text">Odkryj kilka gier</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">💰 Konkurencyjne ceny</h5>
+                    <h5 class="card-title">💰 Konkurencyjne ceny (bo nie konkurujemy z niczym)</h5>
                     <p class="card-text">Najlepsze oferty i regularne promocje</p>
                 </div>
             </div>
@@ -26,15 +26,15 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">⚡ Szybkie pobieranie</h5>
-                    <p class="card-text">Natychmiastowy dostęp do zakupionych gier</p>
+                    <h5 class="card-title">⚡ Szybkie pobieranie (może jak sie cud zdarzy)</h5>
+                    <p class="card-text">Natychmiastowy dostęp do zakupionych gier (najlepszy żart)</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="mt-4">
-        <a asp-controller="Games" asp-action="Index" class="btn btn-primary btn-lg me-3">Przeglądaj gry</a>
+        <a asp-controller="Games" asp-action="Index" class="btn btn-primary btn-lg me-3">Przeglądaj "gry"</a>
         @if (!User.Identity.IsAuthenticated)
         {
             <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary btn-lg">Dołącz teraz</a>

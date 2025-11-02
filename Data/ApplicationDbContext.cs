@@ -13,6 +13,8 @@ namespace mist.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,7 +29,7 @@ namespace mist.Data
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            // Purchase - composite key and relationships
+            // Purchase relationships
             modelBuilder.Entity<Purchase>()
                 .HasOne(p => p.User)
                 .WithMany(u => u.Purchases)
@@ -39,6 +41,25 @@ namespace mist.Data
                 .WithMany(g => g.Purchases)
                 .HasForeignKey(p => p.GameId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Cart relationships
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.User)
+                .WithOne()
+                .HasForeignKey<Cart>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Game)
+                .WithMany()
+                .HasForeignKey(ci => ci.GameId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Seed data
             modelBuilder.Entity<Game>().HasData(
