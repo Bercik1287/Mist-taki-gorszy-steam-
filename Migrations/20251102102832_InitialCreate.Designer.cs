@@ -11,7 +11,7 @@ using mist.Data;
 namespace mist.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251031220600_InitialCreate")]
+    [Migration("20251102102832_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -137,7 +137,7 @@ namespace mist.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Local).AddTicks(5844),
+                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc),
                             Description = "Futurystyczna gra RPG w otwartym świecie Night City",
                             Developer = "CD Projekt Red",
                             Genre = "RPG",
@@ -151,7 +151,7 @@ namespace mist.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Local).AddTicks(8066),
+                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc),
                             Description = "Epicka przygoda Geralta z Rivii",
                             Developer = "CD Projekt Red",
                             Genre = "RPG",

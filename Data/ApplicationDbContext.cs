@@ -61,7 +61,7 @@ namespace mist.Data
                 .HasForeignKey(ci => ci.GameId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed data
+            // Seed data - użyj stałych wartości dat
             modelBuilder.Entity<Game>().HasData(
                 new Game
                 {
@@ -73,7 +73,9 @@ namespace mist.Data
                     Publisher = "CD Projekt",
                     Genre = "RPG",
                     ReleaseDate = new DateTime(2020, 12, 10),
-                    ImageUrl = "/images/cyberpunk.jpg"
+                    ImageUrl = "/images/cyberpunk.jpg",
+                    IsActive = true,
+                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc) // Stała wartość
                 },
                 new Game
                 {
@@ -85,9 +87,38 @@ namespace mist.Data
                     Publisher = "CD Projekt",
                     Genre = "RPG",
                     ReleaseDate = new DateTime(2015, 5, 19),
-                    ImageUrl = "/images/witcher3.jpg"
+                    ImageUrl = "/images/witcher3.jpg",
+                    IsActive = true,
+                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc) // Stała wartość
                 }
-            );
+           );
+        }
+
+        // Dodaj metodę do automatycznego ustawiania CreatedAt przy zapisie
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is Game && e.State == EntityState.Added);
+
+            foreach (var entry in entries)
+            {
+                ((Game)entry.Entity).CreatedAt = DateTime.UtcNow;
+            }
+
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is Game && e.State == EntityState.Added);
+
+            foreach (var entry in entries)
+            {
+                ((Game)entry.Entity).CreatedAt = DateTime.UtcNow;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
