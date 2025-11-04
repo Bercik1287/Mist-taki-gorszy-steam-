@@ -681,6 +681,88 @@
       ]
     },
     {
+      "Route": "images/hollowknight.jpg",
+      "AssetFile": "images/hollowknight.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "49829"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 20:57:52 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc="
+        }
+      ]
+    },
+    {
+      "Route": "images/hollowknight.zfw513mwnr.jpg",
+      "AssetFile": "images/hollowknight.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "49829"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 20:57:52 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zfw513mwnr"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc="
+        },
+        {
+          "Name": "label",
+          "Value": "images/hollowknight.jpg"
+        }
+      ]
+    },
+    {
       "Route": "images/witcher3.gh3huq7555.jpg",
       "AssetFile": "images/witcher3.jpg",
       "Selectors": [],

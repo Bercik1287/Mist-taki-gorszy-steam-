@@ -11,7 +11,7 @@ using mist.Data;
 namespace mist.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251102121505_InitialCreate")]
+    [Migration("20251102205707_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -139,12 +139,12 @@ namespace mist.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc),
                             Description = "Futurystyczna gra RPG w otwartym świecie Day City",
-                            Developer = "DVD Projekt Blue",
+                            Developer = "VHS Projekt Green",
                             Genre = "RPG",
                             ImageUrl = "/images/cyberpunk.jpg",
                             IsActive = true,
                             Price = 199.99m,
-                            Publisher = "DVD Projekt",
+                            Publisher = "VHS Projekt",
                             ReleaseDate = new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Cyberpunk 2137"
                         },
@@ -153,14 +153,28 @@ namespace mist.Migrations
                             Id = 2,
                             CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc),
                             Description = "Epicka przygoda Gerwazego z Rumunii",
-                            Developer = "DVD Projekt Blue",
+                            Developer = "VHS Projekt Green",
                             Genre = "RPG",
                             ImageUrl = "/images/witcher3.jpg",
                             IsActive = true,
                             Price = 129.99m,
-                            Publisher = "DVD Projekt",
+                            Publisher = "VHS Projekt",
                             ReleaseDate = new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Wicher 3 Dziki Zgon"
+                            Title = "Wichur 3 Dziki Zgon"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 312, DateTimeKind.Utc),
+                            Description = "Zejdź w głąb królestwa Hallownest",
+                            Developer = "Team Mirabelle",
+                            Genre = "Metroidvania",
+                            ImageUrl = "/images/hollowknight.jpg",
+                            IsActive = true,
+                            Price = 19.99m,
+                            Publisher = "Team Mirabelle",
+                            ReleaseDate = new DateTime(2017, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Holluw Knuht"
                         });
                 });
 

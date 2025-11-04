@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HueUfddEIuv0Ixapk7IlquoT4KWHwIUc54tjD6wyPLA=",
+  "Hash": "eWdT5AbLg62WG73lSnEZR5K4QdPAkq1Mg58e/UlNFMQ=",
   "Source": "mist",
   "BasePath": "_content/mist",
   "Mode": "Default",
@@ -1464,6 +1464,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/cyberpunk.jpg"
+    },
+    {
+      "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/hollowknight.jpg",
+      "SourceId": "mist",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/shirokitsu/siszarp/mist/wwwroot/",
+      "BasePath": "_content/mist",
+      "RelativePath": "images/hollowknight#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zfw513mwnr",
+      "Integrity": "fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/hollowknight.jpg"
     },
     {
       "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/witcher3.jpg",
@@ -3444,6 +3465,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE="
+        }
+      ]
+    },
+    {
+      "Route": "images/hollowknight.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/hollowknight.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "49829"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 20:57:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc="
+        }
+      ]
+    },
+    {
+      "Route": "images/hollowknight.zfw513mwnr.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/hollowknight.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "49829"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sun, 02 Nov 2025 20:57:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zfw513mwnr"
+        },
+        {
+          "Name": "label",
+          "Value": "images/hollowknight.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-fyCEtXzuGuYHEFJSR6hB/CG8SVJoZWB38BGDMYbZ0Tc="
         }
       ]
     },

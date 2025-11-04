@@ -69,8 +69,8 @@ namespace mist.Data
                     Title = "Cyberpunk 2137",
                     Description = "Futurystyczna gra RPG w otwartym świecie Day City",
                     Price = 199.99m,
-                    Developer = "DVD Projekt Blue",
-                    Publisher = "DVD Projekt",
+                    Developer = "VHS Projekt Green",
+                    Publisher = "VHS Projekt",
                     Genre = "RPG",
                     ReleaseDate = new DateTime(2020, 12, 10),
                     ImageUrl = "/images/cyberpunk.jpg",
@@ -83,13 +83,27 @@ namespace mist.Data
                     Title = "Wichur 3 Dziki Zgon",
                     Description = "Epicka przygoda Gerwazego z Rumunii",
                     Price = 129.99m,
-                    Developer = "DVD Projekt Blue",
-                    Publisher = "DVD Projekt",
+                    Developer = "VHS Projekt Green",
+                    Publisher = "VHS Projekt",
                     Genre = "RPG",
                     ReleaseDate = new DateTime(2015, 5, 19),
                     ImageUrl = "/images/witcher3.jpg",
                     IsActive = true,
                     CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc) // Stała wartość
+                },
+                new Game
+                {
+                    Id = 3,
+                    Title = "Holluw Knuht",
+                    Description = "Zejdź w głąb królestwa Hallownest",
+                    Price = 19.99m,
+                    Developer = "Team Mirabelle",
+                    Publisher = "Team Mirabelle",
+                    Genre = "Metroidvania",
+                    ReleaseDate = new DateTime(2017, 2, 24),
+                    ImageUrl = "/images/hollowknight.jpg",
+                    IsActive = true,
+                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 312, DateTimeKind.Utc) // Stała wartość
                 }
            );
         }
