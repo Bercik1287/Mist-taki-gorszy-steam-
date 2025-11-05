@@ -158,8 +158,9 @@ namespace mist.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Developer", "Genre", "ImageUrl", "IsActive", "Price", "Publisher", "ReleaseDate", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc), "Futurystyczna gra RPG w otwartym świecie Day City", "DVD Projekt Blue", "RPG", "/images/cyberpunk.jpg", true, 199.99m, "DVD Projekt", new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cyberpunk 2137" },
-                    { 2, new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc), "Epicka przygoda Gerwazego z Rumunii", "DVD Projekt Blue", "RPG", "/images/witcher3.jpg", true, 129.99m, "DVD Projekt", new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wicher 3 Dziki Zgon" }
+                    { 1, new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc), "Futurystyczna gra RPG w otwartym świecie Day City", "VHS Projekt Green", "RPG", "/images/cyberpunk.jpg", true, 199.99m, "VHS Projekt", new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cyberpunk 2137" },
+                    { 2, new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc), "Epicka przygoda Gerwazego z Rumunii", "VHS Projekt Green", "RPG", "/images/witcher3.jpg", true, 129.99m, "VHS Projekt", new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wichur 3 Dziki Zgon" },
+                    { 3, new DateTime(2025, 10, 31, 23, 6, 0, 312, DateTimeKind.Utc), "Zejdź w głąb królestwa Hallownest", "Team Mirabelle", "Metroidvania", "/images/hollowknight.jpg", true, 19.99m, "Team Mirabelle", new DateTime(2017, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "Holluw Knuht" }
                 });
 
             migrationBuilder.CreateIndex(
