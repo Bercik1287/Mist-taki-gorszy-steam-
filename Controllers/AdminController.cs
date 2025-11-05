@@ -140,6 +140,10 @@ namespace mist.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePromotion(Promotion promotion)
         {
+            // Usuń walidację dla pól nawigacyjnych
+            ModelState.Remove("Game");
+            ModelState.Remove("CreatedAt");
+            
             if (ModelState.IsValid)
             {
                 // Walidacja dat
@@ -198,6 +202,9 @@ namespace mist.Controllers
             {
                 return NotFound();
             }
+
+            // Usuń walidację dla pól nawigacyjnych
+            ModelState.Remove("Game");
 
             if (ModelState.IsValid)
             {

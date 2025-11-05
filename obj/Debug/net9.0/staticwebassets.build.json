@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+Q3275cOqVckFpVuNS4/BOgCPirUXtuS5/2OjecxexY=",
+  "Hash": "E8AmhSNTvx1IhiaDDztIGWTQFALNDk5iGxldvz6r33c=",
   "Source": "mist",
   "BasePath": "_content/mist",
   "Mode": "Default",
@@ -1443,6 +1443,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/clairobscure.jpg",
+      "SourceId": "mist",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/shirokitsu/siszarp/mist/wwwroot/",
+      "BasePath": "_content/mist",
+      "RelativePath": "images/clairobscure#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dz9xwap0m9",
+      "Integrity": "NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/clairobscure.jpg"
     },
     {
       "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/cyberpunk.jpg",
@@ -3383,6 +3404,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-ZOjKHXnMPQC6F6zd9RBOa1+tLZtU6Qj7PiAopMxtp8c="
+        }
+      ]
+    },
+    {
+      "Route": "images/clairobscure.dz9xwap0m9.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/clairobscure.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "45600"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 05 Nov 2025 20:15:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dz9xwap0m9"
+        },
+        {
+          "Name": "label",
+          "Value": "images/clairobscure.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE="
+        }
+      ]
+    },
+    {
+      "Route": "images/clairobscure.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/clairobscure.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "45600"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 05 Nov 2025 20:15:43 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE="
         }
       ]
     },

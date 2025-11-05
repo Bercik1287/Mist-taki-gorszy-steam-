@@ -599,6 +599,88 @@
       ]
     },
     {
+      "Route": "images/clairobscure.dz9xwap0m9.jpg",
+      "AssetFile": "images/clairobscure.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "45600"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 05 Nov 2025 20:15:43 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dz9xwap0m9"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE="
+        },
+        {
+          "Name": "label",
+          "Value": "images/clairobscure.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "images/clairobscure.jpg",
+      "AssetFile": "images/clairobscure.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "45600"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 05 Nov 2025 20:15:43 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-NzcHP8/FfLuJqrNHiD75oBbvSreb2Jj21qN9/GiLmPE="
+        }
+      ]
+    },
+    {
       "Route": "images/cyberpunk.jpg",
       "AssetFile": "images/cyberpunk.jpg",
       "Selectors": [],

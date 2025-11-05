@@ -24,6 +24,8 @@ namespace mist.Models
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
         public bool IsActive { get; set; } = true;
+        
+        [System.ComponentModel.DataAnnotations.Schema.DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
 
         // Relacje

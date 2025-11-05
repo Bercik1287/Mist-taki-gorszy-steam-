@@ -19,7 +19,7 @@
                     <form asp-action="CreatePromotion" method="post">
                         @Html.AntiForgeryToken()
 
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                         <div class="mb-3">
                             <label asp-for="Name" class="form-label">Nazwa promocji</label>
@@ -75,7 +75,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="StartDate" class="form-label">Data rozpoczęcia</label>
-                                    <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                                    <input asp-for="StartDate" class="form-control" type="datetime-local" 
+                                           value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                                     <span asp-validation-for="StartDate" class="text-danger"></span>
                                 </div>
                             </div>
@@ -83,7 +84,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="EndDate" class="form-label">Data zakończenia</label>
-                                    <input asp-for="EndDate" class="form-control" type="datetime-local" />
+                                    <input asp-for="EndDate" class="form-control" type="datetime-local" 
+                                           value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-ddTHH:mm")" />
                                     <span asp-validation-for="EndDate" class="text-danger"></span>
                                 </div>
                             </div>

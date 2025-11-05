@@ -8,12 +8,13 @@
 
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Edit">
+            <form asp-action="Edit" method="post">
                 @Html.AntiForgeryToken()
                 
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CreatedAt" />
                 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                 <div class="mb-3">
                     <label asp-for="Title" class="form-label">Tytuł</label>
@@ -31,7 +32,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label asp-for="Price" class="form-label">Cena</label>
-                            <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                            <input asp-for="Price" class="form-control" type="number" step="0.01" min="0.01" />
                             <span asp-validation-for="Price" class="text-danger"></span>
                         </div>
                     </div>
@@ -69,7 +70,8 @@
 
                 <div class="mb-3">
                     <label asp-for="ReleaseDate" class="form-label">Data wydania</label>
-                    <input asp-for="ReleaseDate" class="form-control" type="date" />
+                    <input asp-for="ReleaseDate" class="form-control" type="date" 
+                           value="@Model.ReleaseDate.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="ReleaseDate" class="text-danger"></span>
                 </div>
 
@@ -84,6 +86,20 @@
                 </div>
             </form>
         </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-info-circle"></i> Informacje</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>ID gry:</strong> @Model.Id</p>
+                    <p><strong>Data dodania:</strong> @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+                    <hr>
+                    <p class="small text-muted mb-0">Zmiany będą widoczne natychmiast po zapisaniu.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -92,3 +108,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

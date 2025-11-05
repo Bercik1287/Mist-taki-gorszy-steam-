@@ -59,14 +59,30 @@ namespace mist.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Game game)
         {
+            // Usuń walidację dla CreatedAt jeśli jest
+            ModelState.Remove("CreatedAt");
+            ModelState.Remove("Owners");
+            ModelState.Remove("Purchases");
+            ModelState.Remove("Promotions");
+            
             if (ModelState.IsValid)
             {
-                game.CreatedAt = DateTime.Now;
+                game.CreatedAt = DateTime.UtcNow;
                 _context.Add(game);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Gra została dodana pomyślnie!";
                 return RedirectToAction(nameof(Index));
             }
+            
+            // Wyświetl błędy walidacji
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Validation Error: {error.ErrorMessage}");
+                }
+            }
+            
             return View(game);
         }
 
@@ -97,6 +113,11 @@ namespace mist.Controllers
             {
                 return NotFound();
             }
+
+            // Usuń walidację dla pól nawigacyjnych
+            ModelState.Remove("Owners");
+            ModelState.Remove("Purchases");
+            ModelState.Remove("Promotions");
 
             if (ModelState.IsValid)
             {
