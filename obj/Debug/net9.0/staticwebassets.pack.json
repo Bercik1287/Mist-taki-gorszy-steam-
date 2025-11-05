@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/clairobscure.jpg",
+      "PackagePath": "staticwebassets/images/clairobscure.jpg"
+    },
+    {
       "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/cyberpunk.jpg",
       "PackagePath": "staticwebassets/images/cyberpunk.jpg"
     },

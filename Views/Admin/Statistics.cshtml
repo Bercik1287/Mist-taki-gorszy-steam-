@@ -1,0 +1,235 @@
+@model mist.ViewModels.StatisticsViewModel
+@{
+    ViewData["Title"] = "Statystyki";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-graph-up"></i> Statystyki i raporty</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Powrót do panelu
+        </a>
+    </div>
+
+    <!-- Główne statystyki -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <i class="bi bi-people fs-1 mb-2"></i>
+                    <h2 class="mb-0">@Model.TotalUsers</h2>
+                    <p class="mb-0">Użytkowników</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <i class="bi bi-controller fs-1 mb-2"></i>
+                    <h2 class="mb-0">@Model.TotalGames</h2>
+                    <p class="mb-0">Gier w ofercie</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <i class="bi bi-cart-check fs-1 mb-2"></i>
+                    <h2 class="mb-0">@Model.TotalPurchases</h2>
+                    <p class="mb-0">Zakupów</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-white">
+                <div class="card-body">
+                    <i class="bi bi-currency-dollar fs-1 mb-2"></i>
+                    <h2 class="mb-0">@Model.TotalRevenue.ToString("C")</h2>
+                    <p class="mb-0">Łączny przychód</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statystyki ostatnich 30 dni -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-calendar-range"></i> Ostatnie 30 dni</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-cart3 text-primary fs-1 mb-2"></i>
+                                    <h3 class="text-primary">@Model.Last30DaysSales</h3>
+                                    <p class="mb-0">Sprzedanych gier</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-cash-stack text-success fs-1 mb-2"></i>
+                                    <h3 class="text-success">@Model.Last30DaysRevenue.ToString("C")</h3>
+                                    <p class="mb-0">Przychód</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top 5 najlepiej sprzedających się gier -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-trophy"></i> Top 5 najlepiej sprzedających się gier</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.TopGames.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Miejsce</th>
+                                        <th>Gra</th>
+                                        <th>Gatunek</th>
+                                        <th>Liczba sprzedaży</th>
+                                        <th>Przychód</th>
+                                        <th>Średnia cena</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.TopGames.Count; i++)
+                                    {
+                                        var stat = Model.TopGames[i];
+                                        var place = i + 1;
+                                        var medal = place switch
+                                        {
+                                            1 => "🥇",
+                                            2 => "🥈",
+                                            3 => "🥉",
+                                            _ => $"{place}."
+                                        };
+
+                                        <tr>
+                                            <td class="fs-4">@medal</td>
+                                            <td>
+                                                <strong>@stat.Game.Title</strong>
+                                                <br>
+                                                <small class="text-muted">@stat.Game.Developer</small>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">@stat.Game.Genre</span>
+                                            </td>
+                                            <td>
+                                                <strong class="text-primary">@stat.SalesCount</strong>
+                                                @if (Model.TotalPurchases > 0)
+                                                {
+                                                    <br>
+                                                    <small class="text-muted">
+                                                        (@(((decimal)stat.SalesCount / Model.TotalPurchases * 100).ToString("F1"))%)
+                                                    </small>
+                                                }
+                                            </td>
+                                            <td>
+                                                <strong class="text-success">@stat.Revenue.ToString("C")</strong>
+                                            </td>
+                                            <td>
+                                                @((stat.Revenue / stat.SalesCount).ToString("C"))
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-3">Brak danych o sprzedaży</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dodatkowe metryki -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-calculator"></i> Średnie wartości</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Średnia wartość zakupu:</span>
+                        <strong class="text-success">
+                            @(Model.TotalPurchases > 0 ? (Model.TotalRevenue / Model.TotalPurchases).ToString("C") : "0")
+                        </strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Zakupów na użytkownika:</span>
+                        <strong class="text-primary">
+                            @(Model.TotalUsers > 0 ? ((decimal)Model.TotalPurchases / Model.TotalUsers).ToString("F2") : "0")
+                        </strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Przychód na użytkownika:</span>
+                        <strong class="text-info">
+                            @(Model.TotalUsers > 0 ? (Model.TotalRevenue / Model.TotalUsers).ToString("C") : "0")
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-percent"></i> Wskaźniki</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Współczynnik konwersji:</span>
+                        <strong>
+                            @(Model.TotalUsers > 0 && Model.TotalPurchases > 0 
+                                ? (((decimal)Model.TotalPurchases / Model.TotalUsers) * 100).ToString("F1") + "%" 
+                                : "0%")
+                        </strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Popularne gry (top 3):</span>
+                        <strong>
+                            @(Model.TopGames.Any() 
+                                ? ((decimal)Model.TopGames.Take(3).Sum(g => g.SalesCount) / Model.TotalPurchases * 100).ToString("F1") + "%" 
+                                : "0%")
+                        </strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Ostatnie 30 dni (% sprzedaży):</span>
+                        <strong>
+                            @(Model.TotalPurchases > 0 
+                                ? ((decimal)Model.Last30DaysSales / Model.TotalPurchases * 100).ToString("F1") + "%" 
+                                : "0%")
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

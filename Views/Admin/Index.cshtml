@@ -1,0 +1,227 @@
+@model mist.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Panel Administracyjny";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-speedometer2"></i> Panel Administracyjny</h1>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Statystyki -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Użytkownicy</h6>
+                            <h2 class="mb-0">@Model.TotalUsers</h2>
+                        </div>
+                        <i class="bi bi-people fs-1"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-action="Users" class="text-white text-decoration-none">
+                        Zarządzaj <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Gry</h6>
+                            <h2 class="mb-0">@Model.TotalGames</h2>
+                        </div>
+                        <i class="bi bi-controller fs-1"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Games" asp-action="Index" class="text-white text-decoration-none">
+                        Zobacz wszystkie <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Zakupy</h6>
+                            <h2 class="mb-0">@Model.TotalPurchases</h2>
+                        </div>
+                        <i class="bi bi-cart-check fs-1"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-action="Statistics" class="text-white text-decoration-none">
+                        Statystyki <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Przychód</h6>
+                            <h2 class="mb-0">@Model.TotalRevenue.ToString("C")</h2>
+                        </div>
+                        <i class="bi bi-currency-dollar fs-1"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-action="Statistics" class="text-white text-decoration-none">
+                        Raporty <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Szybkie akcje -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning-fill"></i> Szybkie akcje</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a asp-controller="Games" asp-action="Create" class="btn btn-success btn-lg w-100">
+                                <i class="bi bi-plus-circle"></i><br>Dodaj grę
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a asp-action="CreatePromotion" class="btn btn-warning btn-lg w-100">
+                                <i class="bi bi-percent"></i><br>Nowa promocja
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a asp-action="Users" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-people"></i><br>Użytkownicy
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a asp-action="Promotions" class="btn btn-info btn-lg w-100">
+                                <i class="bi bi-tag"></i><br>Promocje
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aktywne promocje -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-tag"></i> Aktywne promocje
+                        <span class="badge bg-light text-dark">@Model.ActivePromotions</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.ActivePromotions > 0)
+                    {
+                        <p>Obecnie aktywnych: <strong>@Model.ActivePromotions</strong> promocji</p>
+                        <a asp-action="Promotions" class="btn btn-info">Zobacz wszystkie promocje</a>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Brak aktywnych promocji</p>
+                        <a asp-action="CreatePromotion" class="btn btn-warning">Utwórz promocję</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-graph-up"></i> Szybkie statystyki</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><strong>Łączna liczba gier:</strong> @Model.TotalGames</li>
+                        <li><strong>Łączna liczba użytkowników:</strong> @Model.TotalUsers</li>
+                        <li><strong>Łączny przychód:</strong> @Model.TotalRevenue.ToString("C")</li>
+                    </ul>
+                    <a asp-action="Statistics" class="btn btn-success">Pełne statystyki</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ostatnie zakupy -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Ostatnie zakupy</h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.RecentPurchases.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Użytkownik</th>
+                                        <th>Gra</th>
+                                        <th>Cena</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var purchase in Model.RecentPurchases)
+                                    {
+                                        <tr>
+                                            <td>@purchase.PurchaseDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>
+                                                <a asp-action="UserDetails" asp-route-id="@purchase.UserId">
+                                                    @purchase.User.Username
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Games" asp-action="Details" asp-route-id="@purchase.GameId">
+                                                    @purchase.Game.Title
+                                                </a>
+                                            </td>
+                                            <td><strong class="text-success">@purchase.PricePaid.ToString("C")</strong></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted py-4">Brak ostatnich zakupów</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

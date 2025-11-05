@@ -18,6 +18,7 @@ namespace mist.Services
             var cart = await _context.Carts
                 .Include(c => c.CartItems)
                 .ThenInclude(ci => ci.Game)
+                .ThenInclude(g => g.Promotions)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
             if (cart == null)
@@ -33,7 +34,10 @@ namespace mist.Services
         public async Task<(bool Success, string Message)> AddToCartAsync(int userId, int gameId)
         {
             // Sprawdź czy gra istnieje
-            var game = await _context.Games.FindAsync(gameId);
+            var game = await _context.Games
+                .Include(g => g.Promotions)
+                .FirstOrDefaultAsync(g => g.Id == gameId);
+                
             if (game == null)
             {
                 return (false, "Gra nie została znaleziona");
@@ -58,11 +62,14 @@ namespace mist.Services
                 return (false, "Gra jest już w koszyku");
             }
 
+            // Użyj aktualnej ceny (z uwzględnieniem promocji)
+            var currentPrice = game.GetCurrentPrice();
+
             var cartItem = new CartItem
             {
                 CartId = cart.Id,
                 GameId = gameId,
-                Price = game.Price
+                Price = currentPrice
             };
 
             _context.CartItems.Add(cartItem);
