@@ -11,7 +11,7 @@ using mist.Data;
 namespace mist.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251102205707_InitialCreate")]
+    [Migration("20251104210405_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

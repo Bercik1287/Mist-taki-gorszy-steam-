@@ -1,0 +1,171 @@
+@model mist.Models.User
+@{
+    ViewData["Title"] = "Szczegóły użytkownika: " + Model.Username;
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-person-circle"></i> Szczegóły użytkownika</h1>
+        <a asp-action="Users" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Powrót do listy
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Informacje podstawowe</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="text-muted small">Nazwa użytkownika</label>
+                        <h5>@Model.Username</h5>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">Email</label>
+                        <p class="mb-0">@Model.Email</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">Rola</label>
+                        <div>
+                            @if (Model.Role == "Admin")
+                            {
+                                <span class="badge bg-danger fs-6">
+                                    <i class="bi bi-shield-fill"></i> Administrator
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary fs-6">
+                                    <i class="bi bi-person"></i> Użytkownik
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-muted small">Data rejestracji</label>
+                        <p class="mb-0">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-grid gap-2">
+                        <form asp-action="ToggleUserRole" asp-route-id="@Model.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-warning w-100"
+                                    onclick="return confirm('Czy na pewno chcesz zmienić rolę tego użytkownika?')">
+                                <i class="bi bi-arrow-repeat"></i> Zmień rolę
+                            </button>
+                        </form>
+
+                        <form asp-action="DeleteUser" asp-route-id="@Model.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger w-100"
+                                    onclick="return confirm('Czy na pewno chcesz usunąć tego użytkownika? Ta operacja jest nieodwracalna!')">
+                                <i class="bi bi-trash"></i> Usuń użytkownika
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-cart-check"></i> Historia zakupów
+                        <span class="badge bg-light text-dark">@Model.Purchases.Count</span>
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Purchases.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Data zakupu</th>
+                                        <th>Gra</th>
+                                        <th>Zapłacono</th>
+                                        <th>Akcje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var purchase in Model.Purchases.OrderByDescending(p => p.PurchaseDate))
+                                    {
+                                        <tr>
+                                            <td>@purchase.PurchaseDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>
+                                                <strong>@purchase.Game.Title</strong>
+                                                <br>
+                                                <small class="text-muted">@purchase.Game.Genre</small>
+                                            </td>
+                                            <td>
+                                                <strong class="text-success">@purchase.PricePaid.ToString("C")</strong>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Games" asp-action="Details" 
+                                                   asp-route-id="@purchase.GameId" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i> Szczegóły
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <td colspan="2" class="text-end"><strong>Łącznie:</strong></td>
+                                        <td colspan="2">
+                                            <strong class="text-success">
+                                                @Model.Purchases.Sum(p => p.PricePaid).ToString("C")
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-3">Użytkownik nie dokonał jeszcze żadnych zakupów</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (Model.Purchases.Any())
+            {
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-graph-up"></i> Statystyki</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <h3 class="text-primary">@Model.Purchases.Count</h3>
+                                <p class="text-muted">Zakupionych gier</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <h3 class="text-success">@Model.Purchases.Sum(p => p.PricePaid).ToString("C")</h3>
+                                <p class="text-muted">Łączna wartość</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <h3 class="text-info">
+                                    @(Model.Purchases.Any() ? (Model.Purchases.Sum(p => p.PricePaid) / Model.Purchases.Count).ToString("C") : "0")
+                                </h3>
+                                <p class="text-muted">Średnia wartość</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

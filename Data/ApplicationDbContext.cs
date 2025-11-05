@@ -15,6 +15,7 @@ namespace mist.Data
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,7 +62,14 @@ namespace mist.Data
                 .HasForeignKey(ci => ci.GameId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed data - użyj stałych wartości dat
+            // Promotion relationships
+            modelBuilder.Entity<Promotion>()
+                .HasOne(p => p.Game)
+                .WithMany(g => g.Promotions)
+                .HasForeignKey(p => p.GameId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Seed data
             modelBuilder.Entity<Game>().HasData(
                 new Game
                 {
@@ -75,7 +83,7 @@ namespace mist.Data
                     ReleaseDate = new DateTime(2020, 12, 10),
                     ImageUrl = "/images/cyberpunk.jpg",
                     IsActive = true,
-                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc) // Stała wartość
+                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc)
                 },
                 new Game
                 {
@@ -89,7 +97,7 @@ namespace mist.Data
                     ReleaseDate = new DateTime(2015, 5, 19),
                     ImageUrl = "/images/witcher3.jpg",
                     IsActive = true,
-                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc) // Stała wartość
+                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc)
                 },
                 new Game
                 {
@@ -103,12 +111,11 @@ namespace mist.Data
                     ReleaseDate = new DateTime(2017, 2, 24),
                     ImageUrl = "/images/hollowknight.jpg",
                     IsActive = true,
-                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 312, DateTimeKind.Utc) // Stała wartość
+                    CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 312, DateTimeKind.Utc)
                 }
            );
         }
 
-        // Dodaj metodę do automatycznego ustawiania CreatedAt przy zapisie
         public override int SaveChanges()
         {
             var entries = ChangeTracker.Entries()

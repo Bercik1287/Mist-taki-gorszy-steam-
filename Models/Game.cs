@@ -24,10 +24,35 @@ namespace mist.Models
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
         public bool IsActive { get; set; } = true;
-        public DateTime CreatedAt { get; set; } // USUŃ = DateTime.Now
+        public DateTime CreatedAt { get; set; }
 
         // Relacje
         public virtual ICollection<User> Owners { get; set; }
         public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual ICollection<Promotion> Promotions { get; set; }
+
+        // Obliczenia - cena z uwzględnieniem aktywnej promocji
+        public decimal GetCurrentPrice()
+        {
+            var activePromotion = Promotions?
+                .FirstOrDefault(p => p.IsValidNow());
+
+            if (activePromotion != null)
+            {
+                return activePromotion.CalculateDiscountedPrice(Price);
+            }
+
+            return Price;
+        }
+
+        public Promotion GetActivePromotion()
+        {
+            return Promotions?.FirstOrDefault(p => p.IsValidNow());
+        }
+
+        public bool HasActivePromotion()
+        {
+            return GetActivePromotion() != null;
+        }
     }
 }

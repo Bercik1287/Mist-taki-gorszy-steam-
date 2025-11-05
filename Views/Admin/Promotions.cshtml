@@ -1,0 +1,171 @@
+@model IEnumerable<mist.Models.Promotion>
+@{
+    ViewData["Title"] = "Zarządzanie promocjami";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-tag"></i> Zarządzanie promocjami</h1>
+        <div>
+            <a asp-action="CreatePromotion" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Dodaj promocję
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Powrót do panelu
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <h4>Brak promocji</h4>
+            <p>Nie utworzono jeszcze żadnych promocji.</p>
+            <a asp-action="CreatePromotion" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Utwórz pierwszą promocję
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">Lista promocji (@Model.Count())</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nazwa</th>
+                                <th>Gra</th>
+                                <th>Typ rabatu</th>
+                                <th>Wartość</th>
+                                <th>Okres</th>
+                                <th>Status</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var promotion in Model)
+                            {
+                                var isActive = promotion.IsValidNow();
+                                var isPast = promotion.EndDate < DateTime.Now;
+                                var isFuture = promotion.StartDate > DateTime.Now;
+
+                                <tr>
+                                    <td>
+                                        <strong>@promotion.Name</strong>
+                                        @if (!string.IsNullOrEmpty(promotion.Description))
+                                        {
+                                            <br><small class="text-muted">@promotion.Description</small>
+                                        }
+                                    </td>
+                                    <td>@promotion.Game.Title</td>
+                                    <td>
+                                        @if (promotion.DiscountType == mist.Models.DiscountType.Percentage)
+                                        {
+                                            <span class="badge bg-info">Procentowy</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-primary">Kwotowy</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <strong class="text-success">
+                                            @if (promotion.DiscountType == mist.Models.DiscountType.Percentage)
+                                            {
+                                                @:-@promotion.DiscountValue%
+                                            }
+                                            else
+                                            {
+                                                @:-@promotion.DiscountValue.ToString("C")
+                                            }
+                                        </strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            @promotion.Game.Price.ToString("C") → 
+                                            @promotion.CalculateDiscountedPrice(promotion.Game.Price).ToString("C")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small>
+                                            @promotion.StartDate.ToString("dd.MM.yyyy")<br>
+                                            @promotion.EndDate.ToString("dd.MM.yyyy")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        @if (isActive && promotion.IsActive)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle"></i> Aktywna
+                                            </span>
+                                        }
+                                        else if (!promotion.IsActive)
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-pause-circle"></i> Wyłączona
+                                            </span>
+                                        }
+                                        else if (isFuture)
+                                        {
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-clock"></i> Zaplanowana
+                                            </span>
+                                        }
+                                        else if (isPast)
+                                        {
+                                            <span class="badge bg-dark">
+                                                <i class="bi bi-x-circle"></i> Zakończona
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="EditPromotion" asp-route-id="@promotion.Id" 
+                                               class="btn btn-outline-warning" title="Edytuj">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
+                                            <form asp-action="TogglePromotion" asp-route-id="@promotion.Id" 
+                                                  method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" 
+                                                        class="btn @(promotion.IsActive ? "btn-outline-secondary" : "btn-outline-success")" 
+                                                        title="@(promotion.IsActive ? "Dezaktywuj" : "Aktywuj")">
+                                                    <i class="bi bi-@(promotion.IsActive ? "pause" : "play")"></i>
+                                                </button>
+                                            </form>
+
+                                            <form asp-action="DeletePromotion" asp-route-id="@promotion.Id" 
+                                                  method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" 
+                                                        class="btn btn-outline-danger" 
+                                                        title="Usuń"
+                                                        onclick="return confirm('Czy na pewno chcesz usunąć tę promocję?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

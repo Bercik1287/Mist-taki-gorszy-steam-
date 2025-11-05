@@ -1,0 +1,154 @@
+@model mist.Models.Promotion
+@{
+    ViewData["Title"] = "Edytuj promocję: " + Model.Name;
+    var games = ViewBag.Games as List<mist.Models.Game>;
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-pencil"></i> Edytuj promocję</h1>
+        <a asp-action="Promotions" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Powrót
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="EditPromotion" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedAt" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Nazwa promocji</label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Opis (opcjonalnie)</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="GameId" class="form-label">Gra</label>
+                            <select asp-for="GameId" class="form-select">
+                                @foreach (var game in games)
+                                {
+                                    <option value="@game.Id" selected="@(game.Id == Model.GameId)">
+                                        @game.Title (@game.Price.ToString("C"))
+                                    </option>
+                                }
+                            </select>
+                            <span asp-validation-for="GameId" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DiscountType" class="form-label">Typ rabatu</label>
+                                    <select asp-for="DiscountType" class="form-select" id="discountType">
+                                        <option value="0" selected="@(Model.DiscountType == mist.Models.DiscountType.Percentage)">
+                                            Procentowy (%)
+                                        </option>
+                                        <option value="1" selected="@(Model.DiscountType == mist.Models.DiscountType.FixedAmount)">
+                                            Kwotowy (zł)
+                                        </option>
+                                    </select>
+                                    <span asp-validation-for="DiscountType" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DiscountValue" class="form-label">
+                                        Wartość rabatu
+                                        <span id="discountUnit">
+                                            @(Model.DiscountType == mist.Models.DiscountType.Percentage ? "(%)" : "(zł)")
+                                        </span>
+                                    </label>
+                                    <input asp-for="DiscountValue" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="DiscountValue" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="StartDate" class="form-label">Data rozpoczęcia</label>
+                                    <input asp-for="StartDate" class="form-control" type="datetime-local" 
+                                           value="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" />
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EndDate" class="form-label">Data zakończenia</label>
+                                    <input asp-for="EndDate" class="form-control" type="datetime-local" 
+                                           value="@Model.EndDate.ToString("yyyy-MM-ddTHH:mm")" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label">Promocja aktywna</label>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Zapisz zmiany
+                            </button>
+                            <a asp-action="Promotions" class="btn btn-secondary">
+                                Anuluj
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-calculator"></i> Podgląd</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Gra:</strong> @Model.Game?.Title</p>
+                    <p><strong>Cena oryginalna:</strong> @Model.Game?.Price.ToString("C")</p>
+                    <p><strong>Cena po rabacie:</strong> 
+                        <span class="text-success fs-5">
+                            @Model.CalculateDiscountedPrice(Model.Game?.Price ?? 0).ToString("C")
+                        </span>
+                    </p>
+                    <p><strong>Oszczędność:</strong> 
+                        @((Model.Game?.Price ?? 0) - Model.CalculateDiscountedPrice(Model.Game?.Price ?? 0)).ToString("C")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('discountType').addEventListener('change', function() {
+            const unit = this.value == '0' ? '(%)' : '(zł)';
+            document.getElementById('discountUnit').textContent = unit;
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

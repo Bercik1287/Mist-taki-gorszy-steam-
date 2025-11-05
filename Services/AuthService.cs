@@ -30,19 +30,26 @@ namespace mist.Services
                 return (false, "Email jest już zarejestrowany", null);
             }
 
+            // Sprawdź czy to pierwszy użytkownik (automatyczny admin)
+            var isFirstUser = !await _context.Users.AnyAsync();
+
             var user = new User
             {
                 Username = model.Username,
                 Email = model.Email,
                 PasswordHash = HashPassword(model.Password),
                 CreatedAt = DateTime.Now,
-                Role = "User"
+                Role = isFirstUser ? "Admin" : "User"
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return (true, "Rejestracja zakończona sukcesem", user);
+            var message = isFirstUser 
+                ? "Rejestracja zakończona sukcesem! Jako pierwszy użytkownik otrzymałeś uprawnienia administratora." 
+                : "Rejestracja zakończona sukcesem";
+
+            return (true, message, user);
         }
 
         public async Task<(bool Success, string Message, User User)> LoginAsync(LoginViewModel model)

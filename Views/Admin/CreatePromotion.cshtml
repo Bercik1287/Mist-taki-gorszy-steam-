@@ -1,0 +1,148 @@
+@model mist.Models.Promotion
+@{
+    ViewData["Title"] = "Utwórz promocję";
+    var games = ViewBag.Games as List<mist.Models.Game>;
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-tag"></i> Utwórz nową promocję</h1>
+        <a asp-action="Promotions" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Powrót
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="CreatePromotion" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Nazwa promocji</label>
+                            <input asp-for="Name" class="form-control" placeholder="np. Promocja weekendowa" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Opis (opcjonalnie)</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" 
+                                      placeholder="Krótki opis promocji"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="GameId" class="form-label">Wybierz grę</label>
+                            <select asp-for="GameId" class="form-select">
+                                <option value="">-- Wybierz grę --</option>
+                                @foreach (var game in games)
+                                {
+                                    <option value="@game.Id">@game.Title (@game.Price.ToString("C"))</option>
+                                }
+                            </select>
+                            <span asp-validation-for="GameId" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DiscountType" class="form-label">Typ rabatu</label>
+                                    <select asp-for="DiscountType" class="form-select" id="discountType">
+                                        <option value="0">Procentowy (%)</option>
+                                        <option value="1">Kwotowy (zł)</option>
+                                    </select>
+                                    <span asp-validation-for="DiscountType" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DiscountValue" class="form-label">
+                                        Wartość rabatu
+                                        <span id="discountUnit">(% lub zł)</span>
+                                    </label>
+                                    <input asp-for="DiscountValue" class="form-control" type="number" 
+                                           step="0.01" placeholder="np. 20" />
+                                    <span asp-validation-for="DiscountValue" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="StartDate" class="form-label">Data rozpoczęcia</label>
+                                    <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="EndDate" class="form-label">Data zakończenia</label>
+                                    <input asp-for="EndDate" class="form-control" type="datetime-local" />
+                                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input asp-for="IsActive" class="form-check-input" checked />
+                            <label asp-for="IsActive" class="form-check-label">Promocja aktywna</label>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Utwórz promocję
+                            </button>
+                            <a asp-action="Promotions" class="btn btn-secondary">
+                                Anuluj
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-info-circle"></i> Informacje</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Typy rabatów:</h6>
+                    <ul>
+                        <li><strong>Procentowy:</strong> Obniżka o określony procent (np. -20%)</li>
+                        <li><strong>Kwotowy:</strong> Obniżka o stałą kwotę (np. -10 zł)</li>
+                    </ul>
+
+                    <h6 class="mt-3">Zasady:</h6>
+                    <ul>
+                        <li>Data zakończenia musi być późniejsza niż data rozpoczęcia</li>
+                        <li>Rabat procentowy nie może przekraczać 100%</li>
+                        <li>Rabat kwotowy nie może być większy od ceny gry</li>
+                        <li>Promocja aktywna będzie widoczna w sklepie</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('discountType').addEventListener('change', function() {
+            const unit = this.value == '0' ? '(%)' : '(zł)';
+            document.getElementById('discountUnit').textContent = unit;
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

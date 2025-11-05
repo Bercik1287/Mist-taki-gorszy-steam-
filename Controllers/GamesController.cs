@@ -19,6 +19,7 @@ namespace mist.Controllers
         public async Task<IActionResult> Index()
         {
             var games = await _context.Games
+                .Include(g => g.Promotions)
                 .Where(g => g.IsActive)
                 .OrderByDescending(g => g.CreatedAt)
                 .ToListAsync();
@@ -34,6 +35,7 @@ namespace mist.Controllers
             }
 
             var game = await _context.Games
+                .Include(g => g.Promotions)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (game == null)
