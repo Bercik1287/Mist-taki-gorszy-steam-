@@ -11,6 +11,14 @@
         </a>
     </div>
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card">
@@ -51,6 +59,10 @@
                     <hr>
 
                     <div class="d-grid gap-2">
+                        <a asp-action="EditUser" asp-route-id="@Model.Id" class="btn btn-info">
+                            <i class="bi bi-pencil"></i> Edytuj użytkownika
+                        </a>
+
                         <form asp-action="ToggleUserRole" asp-route-id="@Model.Id" method="post">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-warning w-100"

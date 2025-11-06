@@ -1,0 +1,186 @@
+@model mist.Models.User
+@{
+    ViewData["Title"] = "Mój profil";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-person-circle"></i> Mój profil</h1>
+        <a asp-action="Edit" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Edytuj profil
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Informacje podstawowe</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-person-circle text-primary" style="font-size: 5rem;"></i>
+                    </div>
+                    
+                    <h4 class="mb-1">@Model.Username</h4>
+                    
+                    @if (Model.Role == "Admin")
+                    {
+                        <span class="badge bg-danger fs-6 mb-3">
+                            <i class="bi bi-shield-fill"></i> Administrator
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary fs-6 mb-3">
+                            <i class="bi bi-person"></i> Użytkownik
+                        </span>
+                    }
+
+                    <hr>
+
+                    <div class="text-start">
+                        <div class="mb-2">
+                            <small class="text-muted">Email:</small>
+                            <br>
+                            <strong>@Model.Email</strong>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <small class="text-muted">Data rejestracji:</small>
+                            <br>
+                            <strong>@Model.CreatedAt.ToString("dd.MM.yyyy")</strong>
+                        </div>
+
+                        <div>
+                            <small class="text-muted">Członek od:</small>
+                            <br>
+                            <strong>@((DateTime.Now - Model.CreatedAt).Days) dni</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-graph-up"></i> Statystyki
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="bi bi-collection text-primary" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2 mb-0">@Model.Purchases.Count</h3>
+                                <p class="text-muted mb-0">Gier w bibliotece</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="bi bi-cart-check text-success" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2 mb-0">@Model.Purchases.Count</h3>
+                                <p class="text-muted mb-0">Zakupów</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="bi bi-cash text-warning" style="font-size: 2rem;"></i>
+                                <h3 class="mt-2 mb-0">@Model.Purchases.Sum(p => p.PricePaid).ToString("C")</h3>
+                                <p class="text-muted mb-0">Łącznie wydano</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Purchases.Any())
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-clock-history"></i> Ostatnie zakupy
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Gra</th>
+                                        <th>Cena</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var purchase in Model.Purchases.OrderByDescending(p => p.PurchaseDate).Take(5))
+                                    {
+                                        <tr>
+                                            <td>@purchase.PurchaseDate.ToString("dd.MM.yyyy")</td>
+                                            <td>
+                                                <strong>@purchase.Game.Title</strong>
+                                                <br>
+                                                <small class="text-muted">@purchase.Game.Genre</small>
+                                            </td>
+                                            <td>
+                                                <strong class="text-success">@purchase.PricePaid.ToString("C")</strong>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @if (Model.Purchases.Count > 5)
+                    {
+                        <div class="card-footer">
+                            <a asp-controller="Library" asp-action="Purchases" class="btn btn-sm btn-outline-primary">
+                                Zobacz wszystkie zakupy <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="bi bi-cart-x text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3 mb-3">Nie dokonałeś jeszcze żadnych zakupów</p>
+                        <a asp-controller="Games" asp-action="Index" class="btn btn-primary">
+                            <i class="bi bi-shop"></i> Przeglądaj sklep
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5><i class="bi bi-gear"></i> Szybkie akcje</h5>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a asp-action="Edit" class="btn btn-primary">
+                            <i class="bi bi-pencil"></i> Edytuj profil
+                        </a>
+                        <a asp-controller="Library" asp-action="Index" class="btn btn-success">
+                            <i class="bi bi-collection"></i> Moja biblioteka
+                        </a>
+                        <a asp-controller="Library" asp-action="Purchases" class="btn btn-info">
+                            <i class="bi bi-receipt"></i> Historia zakupów
+                        </a>
+                        <a asp-controller="Games" asp-action="Index" class="btn btn-outline-primary">
+                            <i class="bi bi-shop"></i> Sklep
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

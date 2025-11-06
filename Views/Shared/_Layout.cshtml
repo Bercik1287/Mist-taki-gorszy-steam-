@@ -91,6 +91,8 @@
                             </li>
                             
                             
+                            <!-- Zamień sekcję dropdown menu użytkownika w _Layout.cshtml na: -->
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
                                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,6 +103,17 @@
                                     }
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Profile" asp-action="Details">
+                                            <i class="bi bi-person"></i> Mój profil
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Profile" asp-action="Edit">
+                                            <i class="bi bi-pencil"></i> Edytuj profil
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Library" asp-action="Index">
                                             <i class="bi bi-collection"></i> Moja biblioteka

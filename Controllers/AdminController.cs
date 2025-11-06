@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using mist.Data;
 using mist.Models;
 using mist.ViewModels;
+using mist.Services;
 
 namespace mist.Controllers
 {
@@ -11,10 +12,12 @@ namespace mist.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAuthService _authService;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context, IAuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
         // Dashboard
@@ -61,6 +64,91 @@ namespace mist.Controllers
             }
 
             return View(user);
+        }
+
+        // GET: Admin/EditUser
+        public async Task<IActionResult> EditUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new EditProfileViewModel
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                IsAdminEdit = true
+            };
+
+            return View(model);
+        }
+
+        // POST: Admin/EditUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(int id, EditProfileViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            // Usuń walidację dla pól, które nie są wymagane w tym kontekście
+            ModelState.Remove("CurrentPassword");
+            ModelState.Remove("IsAdminEdit");
+            if (string.IsNullOrEmpty(model.NewPassword))
+            {
+                ModelState.Remove("NewPassword");
+                ModelState.Remove("ConfirmNewPassword");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Sprawdź czy nowa nazwa użytkownika jest już zajęta
+            if (model.Username != user.Username)
+            {
+                if (await _context.Users.AnyAsync(u => u.Username == model.Username && u.Id != id))
+                {
+                    ModelState.AddModelError("Username", "Ta nazwa użytkownika jest już zajęta");
+                    return View(model);
+                }
+            }
+
+            // Sprawdź czy nowy email jest już zajęty
+            if (model.Email != user.Email)
+            {
+                if (await _context.Users.AnyAsync(u => u.Email == model.Email && u.Id != id))
+                {
+                    ModelState.AddModelError("Email", "Ten adres email jest już zarejestrowany");
+                    return View(model);
+                }
+            }
+
+            // Zaktualizuj dane użytkownika
+            user.Username = model.Username;
+            user.Email = model.Email;
+
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                user.PasswordHash = _authService.HashPassword(model.NewPassword);
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Dane użytkownika {user.Username} zostały zaktualizowane";
+            return RedirectToAction(nameof(UserDetails), new { id = user.Id });
         }
 
         [HttpPost]
