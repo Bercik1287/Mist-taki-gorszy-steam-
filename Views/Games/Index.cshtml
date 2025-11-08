@@ -1,14 +1,19 @@
 @model IEnumerable<mist.Models.Game>
 @{
     ViewData["Title"] = "Katalog Gier";
+    var searchModel = ViewBag.SearchModel as mist.ViewModels.GameSearchViewModel;
+    var genres = ViewBag.Genres as List<string>;
+    var developers = ViewBag.Developers as List<string>;
 }
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Katalog Gier</h1>
+        <h1><i class="bi bi-shop"></i> Katalog Gier</h1>
         @if (User.IsInRole("Admin"))
         {
-            <a asp-action="Create" class="btn btn-success">Dodaj nową grę</a>
+            <a asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Dodaj nową grę
+            </a>
         }
     </div>
 
@@ -20,10 +25,123 @@
         </div>
     }
 
+    <!-- Wyszukiwarka i filtry -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-funnel"></i> Wyszukaj i filtruj
+                <button class="btn btn-sm btn-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#searchFilters">
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+            </h5>
+        </div>
+        <div class="collapse show" id="searchFilters">
+            <div class="card-body">
+                <form asp-action="Index" method="get">
+                    <div class="row g-3">
+                        <!-- Wyszukiwanie -->
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="bi bi-search"></i> Szukaj
+                            </label>
+                            <input type="text" name="SearchTerm" class="form-control" 
+                                   placeholder="Tytuł, deweloper, opis..." 
+                                   value="@searchModel?.SearchTerm">
+                        </div>
+
+                        <!-- Sortowanie -->
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="bi bi-sort-down"></i> Sortuj według
+                            </label>
+                            <select name="SortBy" class="form-select">
+                                <option value="newest" selected="@(searchModel?.SortBy == "newest" || string.IsNullOrEmpty(searchModel?.SortBy))">Najnowsze</option>
+                                <option value="name" selected="@(searchModel?.SortBy == "name")">Nazwa (A-Z)</option>
+                                <option value="price-asc" selected="@(searchModel?.SortBy == "price-asc")">Cena (rosnąco)</option>
+                                <option value="price-desc" selected="@(searchModel?.SortBy == "price-desc")">Cena (malejąco)</option>
+                            </select>
+                        </div>
+
+                        <!-- Gatunek -->
+                        <div class="col-md-4">
+                            <label class="form-label">
+                                <i class="bi bi-tag"></i> Gatunek
+                            </label>
+                            <select name="Genre" class="form-select">
+                                <option value="">Wszystkie</option>
+                                @foreach (var genre in genres ?? new List<string>())
+                                {
+                                    <option value="@genre" selected="@(searchModel?.Genre == genre)">@genre</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Deweloper -->
+                        <div class="col-md-4">
+                            <label class="form-label">
+                                <i class="bi bi-building"></i> Deweloper
+                            </label>
+                            <select name="Developer" class="form-select">
+                                <option value="">Wszyscy</option>
+                                @foreach (var dev in developers ?? new List<string>())
+                                {
+                                    <option value="@dev" selected="@(searchModel?.Developer == dev)">@dev</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Zakres cen -->
+                        <div class="col-md-2">
+                            <label class="form-label">
+                                <i class="bi bi-currency-dollar"></i> Cena min
+                            </label>
+                            <input type="number" name="MinPrice" class="form-control" 
+                                   step="0.01" min="0" placeholder="0.00" 
+                                   value="@searchModel?.MinPrice">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">
+                                <i class="bi bi-currency-dollar"></i> Cena max
+                            </label>
+                            <input type="number" name="MaxPrice" class="form-control" 
+                                   step="0.01" min="0" placeholder="999.99" 
+                                   value="@searchModel?.MaxPrice">
+                        </div>
+
+
+
+                        <!-- Przyciski -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> Szukaj
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Wyczyść filtry
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wyniki -->
+    <div class="mb-3">
+        <p class="text-muted">
+            Znaleziono: <strong>@Model.Count()</strong> 
+            @(Model.Count() == 1 ? "grę" : Model.Count() < 5 ? "gry" : "gier")
+        </p>
+    </div>
+
     @if (!Model.Any())
     {
-        <div class="alert alert-info">
-            Brak gier w katalogu.
+        <div class="alert alert-info text-center">
+            <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+            <h4 class="mt-3">Nie znaleziono gier</h4>
+            <p>Spróbuj zmienić kryteria wyszukiwania lub 
+                <a asp-action="Index">wyczyścić filtry</a>
+            </p>
         </div>
     }
     else
@@ -90,7 +208,6 @@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <a asp-action="Edit" asp-route-id="@game.Id" class="btn btn-outline-warning">Edytuj</a>
-                                        <a asp-action="Delete" asp-route-id="@game.Id" class="btn btn-outline-danger">Usuń</a>
                                     }
                                 </div>
                             </div>

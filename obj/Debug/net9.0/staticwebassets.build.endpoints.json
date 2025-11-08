@@ -763,6 +763,88 @@
       ]
     },
     {
+      "Route": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "AssetFile": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "47434"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Nov 2025 18:52:01 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4="
+        }
+      ]
+    },
+    {
+      "Route": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.y83k4xrfmv.jpg",
+      "AssetFile": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "47434"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Nov 2025 18:52:01 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y83k4xrfmv"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4="
+        },
+        {
+          "Name": "label",
+          "Value": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg"
+        }
+      ]
+    },
+    {
       "Route": "images/hollowknight.jpg",
       "AssetFile": "images/hollowknight.jpg",
       "Selectors": [],

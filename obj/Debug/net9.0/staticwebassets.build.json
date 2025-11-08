@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "E8AmhSNTvx1IhiaDDztIGWTQFALNDk5iGxldvz6r33c=",
+  "Hash": "S6oHsARqPXXQUbWkvyPl8YUJHHLAydv0iTm6djS2f6Q=",
   "Source": "mist",
   "BasePath": "_content/mist",
   "Mode": "Default",
@@ -1485,6 +1485,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/cyberpunk.jpg"
+    },
+    {
+      "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "SourceId": "mist",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/shirokitsu/siszarp/mist/wwwroot/",
+      "BasePath": "_content/mist",
+      "RelativePath": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "y83k4xrfmv",
+      "Integrity": "cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg"
     },
     {
       "Identity": "/home/shirokitsu/siszarp/mist/wwwroot/images/hollowknight.jpg",
@@ -3568,6 +3589,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-Cw7FQi/hTOBsJz+AZ4QTLzVaIONEDjZI/rQ0mu25zaE="
+        }
+      ]
+    },
+    {
+      "Route": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "47434"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Nov 2025 18:52:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4="
+        }
+      ]
+    },
+    {
+      "Route": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.y83k4xrfmv.jpg",
+      "AssetFile": "/home/shirokitsu/siszarp/mist/wwwroot/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "47434"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 07 Nov 2025 18:52:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "y83k4xrfmv"
+        },
+        {
+          "Name": "label",
+          "Value": "images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4="
         }
       ]
     },

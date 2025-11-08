@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col-md-8">
-            <form asp-action="Edit" method="post">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 
                 <input type="hidden" asp-for="Id" />
@@ -46,9 +46,37 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="ImageUrl" class="form-label">URL obrazka</label>
-                    <input asp-for="ImageUrl" class="form-control" />
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    <label class="form-label">Obecne zdjęcie</label>
+                    <div class="mb-2">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl) && Model.ImageUrl != "/images/default-game.jpg")
+                        {
+                            <img src="@Model.ImageUrl" alt="Obecne zdjęcie" class="img-thumbnail" style="max-width: 300px; max-height: 300px;">
+                            <div class="form-check mt-2">
+                                <input type="checkbox" name="removeImage" class="form-check-input" id="removeImageCheck">
+                                <label class="form-check-label text-danger" for="removeImageCheck">
+                                    <i class="bi bi-trash"></i> Usuń obecne zdjęcie
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> Nie przesłano jeszcze zdjęcia dla tej gry
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nowe zdjęcie gry (opcjonalnie)</label>
+                    <input type="file" name="imageFile" class="form-control" accept="image/*" id="imageFileInput" />
+                    <div class="form-text">
+                        Dozwolone formaty: JPG, JPEG, PNG, GIF, WEBP. Maksymalny rozmiar: 5MB
+                    </div>
+                    <div id="imagePreview" class="mt-2" style="display: none;">
+                        <p class="small text-muted">Nowy podgląd:</p>
+                        <img id="previewImage" src="" alt="Podgląd" class="img-thumbnail" style="max-width: 300px; max-height: 300px;">
+                    </div>
                 </div>
 
                 <div class="row">
@@ -96,7 +124,12 @@
                     <p><strong>ID gry:</strong> @Model.Id</p>
                     <p><strong>Data dodania:</strong> @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
                     <hr>
-                    <p class="small text-muted mb-0">Zmiany będą widoczne natychmiast po zapisaniu.</p>
+                    <p class="small text-muted mb-0">
+                        <strong>Zarządzanie zdjęciem:</strong><br>
+                        • Możesz przesłać nowe zdjęcie<br>
+                        • Możesz usunąć obecne zdjęcie<br>
+                        • Jeśli nie wybierzesz żadnej opcji, obecne zdjęcie zostanie zachowane
+                    </p>
                 </div>
             </div>
         </div>
@@ -107,6 +140,34 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    
+    <script>
+        // Podgląd obrazka przed przesłaniem
+        document.getElementById('imageFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                
+                // Jeśli wybrano nowy plik, odznacz opcję usunięcia
+                document.getElementById('removeImageCheck')?.checked = false;
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+
+        // Jeśli zaznaczono usunięcie, wyczyść input pliku
+        document.getElementById('removeImageCheck')?.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('imageFileInput').value = '';
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+    </script>
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
