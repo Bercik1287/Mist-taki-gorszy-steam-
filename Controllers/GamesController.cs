@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mist.Data;
 using mist.Models;
-using mist.Services;
+using mist.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace mist.Controllers
@@ -10,22 +10,102 @@ namespace mist.Controllers
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IFileUploadService _fileUploadService;
 
-        public GamesController(ApplicationDbContext context, IFileUploadService fileUploadService)
+        public GamesController(ApplicationDbContext context)
         {
             _context = context;
-            _fileUploadService = fileUploadService;
         }
 
         // GET: Games
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(GameSearchViewModel searchModel)
         {
-            var games = await _context.Games
+            var query = _context.Games
                 .Include(g => g.Promotions)
                 .Where(g => g.IsActive)
-                .OrderByDescending(g => g.CreatedAt)
+                .AsQueryable();
+
+            // Filtrowanie po wyszukiwanej frazie
+            if (!string.IsNullOrWhiteSpace(searchModel.SearchTerm))
+            {
+                var searchTerm = searchModel.SearchTerm.ToLower();
+                query = query.Where(g => 
+                    g.Title.ToLower().Contains(searchTerm) ||
+                    g.Description.ToLower().Contains(searchTerm) ||
+                    g.Developer.ToLower().Contains(searchTerm) ||
+                    g.Publisher.ToLower().Contains(searchTerm)
+                );
+            }
+
+            // Filtrowanie po gatunku
+            if (!string.IsNullOrWhiteSpace(searchModel.Genre))
+            {
+                query = query.Where(g => g.Genre == searchModel.Genre);
+            }
+
+            // Filtrowanie po deweloperze
+            if (!string.IsNullOrWhiteSpace(searchModel.Developer))
+            {
+                query = query.Where(g => g.Developer == searchModel.Developer);
+            }
+
+            // Pobierz gry do listy, aby móc użyć metody GetCurrentPrice()
+            var games = await query.ToListAsync();
+
+            // Filtrowanie po cenie minimalnej (z uwzględnieniem promocji)
+            if (searchModel.MinPrice.HasValue)
+            {
+                games = games.Where(g => g.GetCurrentPrice() >= searchModel.MinPrice.Value).ToList();
+            }
+
+            // Filtrowanie po cenie maksymalnej (z uwzględnieniem promocji)
+            if (searchModel.MaxPrice.HasValue)
+            {
+                games = games.Where(g => g.GetCurrentPrice() <= searchModel.MaxPrice.Value).ToList();
+            }
+
+            // Sortowanie po cenie (z uwzględnieniem promocji)
+            games = searchModel.SortBy switch
+            {
+                "price-asc" => games.OrderBy(g => g.GetCurrentPrice()).ToList(),
+                "price-desc" => games.OrderByDescending(g => g.GetCurrentPrice()).ToList(),
+                "name" => games.OrderBy(g => g.Title).ToList(),
+                _ => games // już posortowane przez query (newest)
+            };
+
+            // Filtrowanie - tylko z promocjami (przed konwersją do listy)
+            if (searchModel.OnlyWithPromotions)
+            {
+                var now = DateTime.Now;
+                query = query.Where(g => g.Promotions.Any(p => 
+                    p.IsActive && p.StartDate <= now && p.EndDate >= now
+                ));
+            }
+
+            // Sortowanie (przed filtrami cenowymi)
+            query = searchModel.SortBy switch
+            {
+                "name" => query.OrderBy(g => g.Title),
+                _ => query.OrderByDescending(g => g.CreatedAt) // newest (default)
+            };
+
+
+            // Pobierz dostępne gatunki i deweloperów dla filtrów
+            ViewBag.Genres = await _context.Games
+                .Where(g => g.IsActive)
+                .Select(g => g.Genre)
+                .Distinct()
+                .OrderBy(g => g)
                 .ToListAsync();
+
+            ViewBag.Developers = await _context.Games
+                .Where(g => g.IsActive)
+                .Select(g => g.Developer)
+                .Distinct()
+                .OrderBy(d => d)
+                .ToListAsync();
+
+            ViewBag.SearchModel = searchModel;
+
             return View(games);
         }
 
@@ -60,50 +140,20 @@ namespace mist.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(Game game, IFormFile imageFile)
+        public async Task<IActionResult> Create(Game game)
         {
-            // Usuń walidację dla CreatedAt jeśli jest
             ModelState.Remove("CreatedAt");
             ModelState.Remove("Owners");
             ModelState.Remove("Purchases");
             ModelState.Remove("Promotions");
-            ModelState.Remove("ImageUrl");
             
             if (ModelState.IsValid)
             {
-                // Obsługa przesyłania pliku
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    var uploadResult = await _fileUploadService.UploadGameImageAsync(imageFile);
-                    
-                    if (!uploadResult.Success)
-                    {
-                        ModelState.AddModelError("ImageFile", uploadResult.Message);
-                        return View(game);
-                    }
-                    
-                    game.ImageUrl = uploadResult.FilePath;
-                }
-                else
-                {
-                    // Jeśli nie przesłano pliku, ustaw domyślny obrazek
-                    game.ImageUrl = "/images/default-game.jpg";
-                }
-
                 game.CreatedAt = DateTime.UtcNow;
                 _context.Add(game);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Gra została dodana pomyślnie!";
                 return RedirectToAction(nameof(Index));
-            }
-            
-            // Wyświetl błędy walidacji
-            foreach (var modelState in ModelState.Values)
-            {
-                foreach (var error in modelState.Errors)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Validation Error: {error.ErrorMessage}");
-                }
             }
             
             return View(game);
@@ -130,57 +180,21 @@ namespace mist.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, Game game, IFormFile imageFile, bool removeImage)
+        public async Task<IActionResult> Edit(int id, Game game)
         {
             if (id != game.Id)
             {
                 return NotFound();
             }
 
-            // Usuń walidację dla pól nawigacyjnych
             ModelState.Remove("Owners");
             ModelState.Remove("Purchases");
             ModelState.Remove("Promotions");
-            ModelState.Remove("ImageUrl");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var existingGame = await _context.Games.AsNoTracking().FirstOrDefaultAsync(g => g.Id == id);
-                    var oldImageUrl = existingGame?.ImageUrl;
-
-                    // Obsługa usuwania obrazka
-                    if (removeImage && !string.IsNullOrEmpty(oldImageUrl))
-                    {
-                        await _fileUploadService.DeleteGameImageAsync(oldImageUrl);
-                        game.ImageUrl = "/images/default-game.jpg";
-                    }
-                    // Obsługa przesyłania nowego pliku
-                    else if (imageFile != null && imageFile.Length > 0)
-                    {
-                        var uploadResult = await _fileUploadService.UploadGameImageAsync(imageFile);
-                        
-                        if (!uploadResult.Success)
-                        {
-                            ModelState.AddModelError("ImageFile", uploadResult.Message);
-                            return View(game);
-                        }
-                        
-                        // Usuń stary obrazek jeśli istnieje
-                        if (!string.IsNullOrEmpty(oldImageUrl) && oldImageUrl != "/images/default-game.jpg")
-                        {
-                            await _fileUploadService.DeleteGameImageAsync(oldImageUrl);
-                        }
-                        
-                        game.ImageUrl = uploadResult.FilePath;
-                    }
-                    else
-                    {
-                        // Zachowaj stary obrazek
-                        game.ImageUrl = oldImageUrl ?? "/images/default-game.jpg";
-                    }
-
                     _context.Update(game);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Gra została zaktualizowana!";
@@ -227,12 +241,6 @@ namespace mist.Controllers
             var game = await _context.Games.FindAsync(id);
             if (game != null)
             {
-                // Usuń obrazek jeśli nie jest domyślny
-                if (!string.IsNullOrEmpty(game.ImageUrl) && game.ImageUrl != "/images/default-game.jpg")
-                {
-                    await _fileUploadService.DeleteGameImageAsync(game.ImageUrl);
-                }
-
                 _context.Games.Remove(game);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Gra została usunięta!";
