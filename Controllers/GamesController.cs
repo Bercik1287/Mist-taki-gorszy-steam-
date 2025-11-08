@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mist.Data;
 using mist.Models;
+using mist.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace mist.Controllers
@@ -9,10 +10,12 @@ namespace mist.Controllers
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IFileUploadService _fileUploadService;
 
-        public GamesController(ApplicationDbContext context)
+        public GamesController(ApplicationDbContext context, IFileUploadService fileUploadService)
         {
             _context = context;
+            _fileUploadService = fileUploadService;
         }
 
         // GET: Games
@@ -57,16 +60,36 @@ namespace mist.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(Game game)
+        public async Task<IActionResult> Create(Game game, IFormFile imageFile)
         {
             // Usuń walidację dla CreatedAt jeśli jest
             ModelState.Remove("CreatedAt");
             ModelState.Remove("Owners");
             ModelState.Remove("Purchases");
             ModelState.Remove("Promotions");
+            ModelState.Remove("ImageUrl");
             
             if (ModelState.IsValid)
             {
+                // Obsługa przesyłania pliku
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    var uploadResult = await _fileUploadService.UploadGameImageAsync(imageFile);
+                    
+                    if (!uploadResult.Success)
+                    {
+                        ModelState.AddModelError("ImageFile", uploadResult.Message);
+                        return View(game);
+                    }
+                    
+                    game.ImageUrl = uploadResult.FilePath;
+                }
+                else
+                {
+                    // Jeśli nie przesłano pliku, ustaw domyślny obrazek
+                    game.ImageUrl = "/images/default-game.jpg";
+                }
+
                 game.CreatedAt = DateTime.UtcNow;
                 _context.Add(game);
                 await _context.SaveChangesAsync();
@@ -107,7 +130,7 @@ namespace mist.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, Game game)
+        public async Task<IActionResult> Edit(int id, Game game, IFormFile imageFile, bool removeImage)
         {
             if (id != game.Id)
             {
@@ -118,11 +141,46 @@ namespace mist.Controllers
             ModelState.Remove("Owners");
             ModelState.Remove("Purchases");
             ModelState.Remove("Promotions");
+            ModelState.Remove("ImageUrl");
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var existingGame = await _context.Games.AsNoTracking().FirstOrDefaultAsync(g => g.Id == id);
+                    var oldImageUrl = existingGame?.ImageUrl;
+
+                    // Obsługa usuwania obrazka
+                    if (removeImage && !string.IsNullOrEmpty(oldImageUrl))
+                    {
+                        await _fileUploadService.DeleteGameImageAsync(oldImageUrl);
+                        game.ImageUrl = "/images/default-game.jpg";
+                    }
+                    // Obsługa przesyłania nowego pliku
+                    else if (imageFile != null && imageFile.Length > 0)
+                    {
+                        var uploadResult = await _fileUploadService.UploadGameImageAsync(imageFile);
+                        
+                        if (!uploadResult.Success)
+                        {
+                            ModelState.AddModelError("ImageFile", uploadResult.Message);
+                            return View(game);
+                        }
+                        
+                        // Usuń stary obrazek jeśli istnieje
+                        if (!string.IsNullOrEmpty(oldImageUrl) && oldImageUrl != "/images/default-game.jpg")
+                        {
+                            await _fileUploadService.DeleteGameImageAsync(oldImageUrl);
+                        }
+                        
+                        game.ImageUrl = uploadResult.FilePath;
+                    }
+                    else
+                    {
+                        // Zachowaj stary obrazek
+                        game.ImageUrl = oldImageUrl ?? "/images/default-game.jpg";
+                    }
+
                     _context.Update(game);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Gra została zaktualizowana!";
@@ -169,6 +227,12 @@ namespace mist.Controllers
             var game = await _context.Games.FindAsync(id);
             if (game != null)
             {
+                // Usuń obrazek jeśli nie jest domyślny
+                if (!string.IsNullOrEmpty(game.ImageUrl) && game.ImageUrl != "/images/default-game.jpg")
+                {
+                    await _fileUploadService.DeleteGameImageAsync(game.ImageUrl);
+                }
+
                 _context.Games.Remove(game);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Gra została usunięta!";

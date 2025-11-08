@@ -48,6 +48,18 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"zer58rmpxp"},{"Name":"integrity","Value":"sha256-Cw7FQi/hTOBsJz\u002BAZ4QTLzVaIONEDjZI/rQ0mu25zaE="},{"Name":"label","Value":"_content/mist/images/cyberpunk.jpg"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"38717"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022Cw7FQi/hTOBsJz\u002BAZ4QTLzVaIONEDjZI/rQ0mu25zaE=\u0022"},{"Name":"Last-Modified","Value":"Tue, 04 Nov 2025 20:27:48 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/mist/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\games\048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"47434"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 07 Nov 2025 18:52:01 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/mist/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.y83k4xrfmv.jpg">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\games\048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"y83k4xrfmv"},{"Name":"integrity","Value":"sha256-cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4="},{"Name":"label","Value":"_content/mist/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"47434"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022cmVyIJNmVw8bj07mI0XkOSSxBOMWy87YtFDzhVte4c4=\u0022"},{"Name":"Last-Modified","Value":"Fri, 07 Nov 2025 18:52:01 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/mist/images/hollowknight.jpg">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\hollowknight.jpg'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>

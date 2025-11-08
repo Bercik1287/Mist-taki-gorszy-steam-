@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mist", "mist.csproj", "{F7A39C1E-D07F-E8CA-353F-9BD2964EA191}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7A39C1E-D07F-E8CA-353F-9BD2964EA191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7A39C1E-D07F-E8CA-353F-9BD2964EA191}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7A39C1E-D07F-E8CA-353F-9BD2964EA191}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7A39C1E-D07F-E8CA-353F-9BD2964EA191}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B8079A9-EC9F-422B-A192-56BB21BDF82A}
+	EndGlobalSection
+EndGlobal
