@@ -1,0 +1,129 @@
+@model mist.Models.Cart
+@{
+    ViewData["Title"] = "Koszyk";
+}
+
+<div class="container">
+    <h1 class="mb-4">
+        <i class="bi bi-cart3"></i> Twój Koszyk
+    </h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!Model.CartItems.Any())
+    {
+        <div class="alert alert-info">
+            <h4>Koszyk jest pusty</h4>
+            <p>Dodaj gry do koszyka, aby kontynuować zakupy.</p>
+            <a asp-controller="Games" asp-action="Index" class="btn btn-primary">Przeglądaj gry</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Produkty w koszyku (@Model.ItemCount)</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <div class="row border-bottom p-3 align-items-center">
+                                <div class="col-md-2">
+                                    @if (!string.IsNullOrEmpty(item.Game.ImageUrl))
+                                    {
+                                        <img src="@item.Game.ImageUrl" class="img-fluid rounded" alt="@item.Game.Title">
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px;">
+                                            <span class="text-muted">Brak</span>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">@item.Game.Title</h5>
+                                    <p class="text-muted mb-0 small">@item.Game.Genre • @item.Game.Developer</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <h5 class="mb-0 text-primary">@item.Price.ToString("C")</h5>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="gameId" value="@item.GameId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                onclick="return confirm('Czy na pewno chcesz usunąć tę grę z koszyka?')">
+                                            <i class="bi bi-trash"></i> Usuń
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <form asp-action="Clear" method="post" class="mb-4">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-danger" 
+                            onclick="return confirm('Czy na pewno chcesz wyczyścić cały koszyk?')">
+                        <i class="bi bi-trash"></i> Wyczyść koszyk
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Podsumowanie</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Liczba produktów:</span>
+                            <strong>@Model.ItemCount</strong>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5>Suma:</h5>
+                            <h5 class="text-success">@Model.TotalAmount.ToString("C")</h5>
+                        </div>
+                        <div class="d-grid">
+                            <a asp-action="Checkout" class="btn btn-success btn-lg">
+                                <i class="bi bi-credit-card"></i> Przejdź do kasy
+                            </a>
+                        </div>
+                        <div class="d-grid mt-2">
+                            <a asp-controller="Games" asp-action="Index" class="btn btn-outline-primary">
+                                Kontynuuj zakupy
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6><i class="bi bi-shield-check"></i> Bezpieczne zakupy</h6>
+                        <p class="small text-muted mb-0">Wszystkie transakcje są szyfrowane i bezpieczne.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

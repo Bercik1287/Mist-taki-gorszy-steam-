@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mist.Data;
 using mist.Models;
+using mist.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace mist.Controllers
@@ -16,12 +17,95 @@ namespace mist.Controllers
         }
 
         // GET: Games
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(GameSearchViewModel searchModel)
         {
-            var games = await _context.Games
+            var query = _context.Games
+                .Include(g => g.Promotions)
                 .Where(g => g.IsActive)
-                .OrderByDescending(g => g.CreatedAt)
+                .AsQueryable();
+
+            // Filtrowanie po wyszukiwanej frazie
+            if (!string.IsNullOrWhiteSpace(searchModel.SearchTerm))
+            {
+                var searchTerm = searchModel.SearchTerm.ToLower();
+                query = query.Where(g => 
+                    g.Title.ToLower().Contains(searchTerm) ||
+                    g.Description.ToLower().Contains(searchTerm) ||
+                    g.Developer.ToLower().Contains(searchTerm) ||
+                    g.Publisher.ToLower().Contains(searchTerm)
+                );
+            }
+
+            // Filtrowanie po gatunku
+            if (!string.IsNullOrWhiteSpace(searchModel.Genre))
+            {
+                query = query.Where(g => g.Genre == searchModel.Genre);
+            }
+
+            // Filtrowanie po deweloperze
+            if (!string.IsNullOrWhiteSpace(searchModel.Developer))
+            {
+                query = query.Where(g => g.Developer == searchModel.Developer);
+            }
+
+            // Pobierz gry do listy, aby móc użyć metody GetCurrentPrice()
+            var games = await query.ToListAsync();
+
+            // Filtrowanie po cenie minimalnej (z uwzględnieniem promocji)
+            if (searchModel.MinPrice.HasValue)
+            {
+                games = games.Where(g => g.GetCurrentPrice() >= searchModel.MinPrice.Value).ToList();
+            }
+
+            // Filtrowanie po cenie maksymalnej (z uwzględnieniem promocji)
+            if (searchModel.MaxPrice.HasValue)
+            {
+                games = games.Where(g => g.GetCurrentPrice() <= searchModel.MaxPrice.Value).ToList();
+            }
+
+            // Sortowanie po cenie (z uwzględnieniem promocji)
+            games = searchModel.SortBy switch
+            {
+                "price-asc" => games.OrderBy(g => g.GetCurrentPrice()).ToList(),
+                "price-desc" => games.OrderByDescending(g => g.GetCurrentPrice()).ToList(),
+                "name" => games.OrderBy(g => g.Title).ToList(),
+                _ => games // już posortowane przez query (newest)
+            };
+
+            // Filtrowanie - tylko z promocjami (przed konwersją do listy)
+            if (searchModel.OnlyWithPromotions)
+            {
+                var now = DateTime.Now;
+                query = query.Where(g => g.Promotions.Any(p => 
+                    p.IsActive && p.StartDate <= now && p.EndDate >= now
+                ));
+            }
+
+            // Sortowanie (przed filtrami cenowymi)
+            query = searchModel.SortBy switch
+            {
+                "name" => query.OrderBy(g => g.Title),
+                _ => query.OrderByDescending(g => g.CreatedAt) // newest (default)
+            };
+
+
+            // Pobierz dostępne gatunki i deweloperów dla filtrów
+            ViewBag.Genres = await _context.Games
+                .Where(g => g.IsActive)
+                .Select(g => g.Genre)
+                .Distinct()
+                .OrderBy(g => g)
                 .ToListAsync();
+
+            ViewBag.Developers = await _context.Games
+                .Where(g => g.IsActive)
+                .Select(g => g.Developer)
+                .Distinct()
+                .OrderBy(d => d)
+                .ToListAsync();
+
+            ViewBag.SearchModel = searchModel;
+
             return View(games);
         }
 
@@ -34,6 +118,7 @@ namespace mist.Controllers
             }
 
             var game = await _context.Games
+                .Include(g => g.Promotions)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (game == null)
@@ -57,14 +142,20 @@ namespace mist.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Game game)
         {
+            ModelState.Remove("CreatedAt");
+            ModelState.Remove("Owners");
+            ModelState.Remove("Purchases");
+            ModelState.Remove("Promotions");
+            
             if (ModelState.IsValid)
             {
-                game.CreatedAt = DateTime.Now;
+                game.CreatedAt = DateTime.UtcNow;
                 _context.Add(game);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Gra została dodana pomyślnie!";
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(game);
         }
 
@@ -95,6 +186,10 @@ namespace mist.Controllers
             {
                 return NotFound();
             }
+
+            ModelState.Remove("Owners");
+            ModelState.Remove("Purchases");
+            ModelState.Remove("Promotions");
 
             if (ModelState.IsValid)
             {
