@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("mist")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2454284d48ee4d8c79d9dca757b4c693fc097679")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38ae06523596dd99494a66fd1ce48f484ab1b156")]
 [assembly: System.Reflection.AssemblyProductAttribute("mist")]
 [assembly: System.Reflection.AssemblyTitleAttribute("mist")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

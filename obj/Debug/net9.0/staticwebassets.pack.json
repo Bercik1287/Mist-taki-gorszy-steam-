@@ -13,6 +13,26 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/clairobscure.jpg",
+      "PackagePath": "staticwebassets/images/clairobscure.jpg"
+    },
+    {
+      "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/cyberpunk.jpg",
+      "PackagePath": "staticwebassets/images/cyberpunk.jpg"
+    },
+    {
+      "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg",
+      "PackagePath": "staticwebassets/images/games/048f260e-beca-4ab6-acb8-d6ad30c5a205.jpg"
+    },
+    {
+      "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/hollowknight.jpg",
+      "PackagePath": "staticwebassets/images/hollowknight.jpg"
+    },
+    {
+      "Id": "/home/shirokitsu/siszarp/mist/wwwroot/images/witcher3.jpg",
+      "PackagePath": "staticwebassets/images/witcher3.jpg"
+    },
+    {
       "Id": "/home/shirokitsu/siszarp/mist/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },

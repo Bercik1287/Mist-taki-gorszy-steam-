@@ -1,28 +1,105 @@
 @model mist.Models.Game
+@inject mist.Services.ICartService CartService
+@inject mist.Services.IPurchaseService PurchaseService
+@inject mist.Services.IWishlistService WishlistService
+@inject mist.Services.IReviewService ReviewService
 @{
     ViewData["Title"] = Model.Title;
+    var userId = User.Identity.IsAuthenticated ? int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value) : 0;
+    var isInCart = User.Identity.IsAuthenticated && await CartService.IsGameInCartAsync(userId, Model.Id);
+    var isPurchased = User.Identity.IsAuthenticated && (await PurchaseService.GetUserOwnedGamesAsync(userId)).Any(g => g.Id == Model.Id);
+    
+    var activePromotion = Model.GetActivePromotion();
+    var hasPromotion = activePromotion != null;
+    var originalPrice = Model.Price;
+    var currentPrice = Model.GetCurrentPrice();
+
+    var isInWishlist = User.Identity.IsAuthenticated && await WishlistService.IsInWishlistAsync(userId, Model.Id);
+    var canReview = User.Identity.IsAuthenticated && (await PurchaseService.GetUserOwnedGamesAsync(userId)).Any(g => g.Id == Model.Id);
+    var userReview = canReview ? await ReviewService.GetUserReviewAsync(userId, Model.Id) : null;
+    var gameReviews = await ReviewService.GetGameReviewsAsync(Model.Id);
 }
 
 <div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
     <div class="row">
         <div class="col-md-6">
-            @if (!string.IsNullOrEmpty(Model.ImageUrl))
-            {
-                <img src="@Model.ImageUrl" class="img-fluid rounded" alt="@Model.Title">
-            }
-            else
-            {
-                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 400px;">
-                    <span class="text-muted">Brak obrazka</span>
-                </div>
-            }
+            <div class="position-relative">
+                @if (hasPromotion)
+                {
+                    <div class="position-absolute top-0 end-0 m-3 z-3">
+                        <span class="badge bg-danger" style="font-size: 1.5rem;">
+                            @if (activePromotion.DiscountType == mist.Models.DiscountType.Percentage)
+                            {
+                                @:-@activePromotion.DiscountValue%
+                            }
+                            else
+                            {
+                                @:-@activePromotion.DiscountValue.ToString("C")
+                            }
+                        </span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" class="img-fluid rounded shadow" alt="@Model.Title">
+                }
+                else
+                {
+                    <div class="bg-light rounded d-flex align-items-center justify-content-center shadow" style="height: 400px;">
+                        <span class="text-muted">Brak obrazka</span>
+                    </div>
+                }
+            </div>
         </div>
         <div class="col-md-6">
             <h1>@Model.Title</h1>
             <p class="text-muted">@Model.Genre • @Model.ReleaseDate.ToString("dd.MM.yyyy")</p>
             
+            @if (hasPromotion)
+            {
+                <div class="alert alert-success mb-3">
+                    <h5 class="alert-heading">
+                        <i class="bi bi-tag-fill"></i> @activePromotion.Name
+                    </h5>
+                    @if (!string.IsNullOrEmpty(activePromotion.Description))
+                    {
+                        <p class="mb-1">@activePromotion.Description</p>
+                    }
+                    <small>Oferta ważna do: @activePromotion.EndDate.ToString("dd.MM.yyyy HH:mm")</small>
+                </div>
+            }
+
             <div class="mb-3">
-                <h3 class="text-primary">@Model.Price.ToString("C")</h3>
+                @if (hasPromotion)
+                {
+                    <div>
+                        <span class="text-muted text-decoration-line-through fs-5">@originalPrice.ToString("C")</span>
+                        <h3 class="text-success d-inline ms-2">@currentPrice.ToString("C")</h3>
+                        <span class="badge bg-success ms-2">
+                            Oszczędzasz @((originalPrice - currentPrice).ToString("C"))
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <h3 class="text-primary">@currentPrice.ToString("C")</h3>
+                }
             </div>
 
             <div class="mb-4">
@@ -41,15 +118,207 @@
                 </div>
             </div>
 
-            <div class="d-grid gap-2 d-md-flex">
-                <button class="btn btn-primary btn-lg">Kup teraz</button>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edytuj</a>
-                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Usuń</a>
-                }
-                <a asp-action="Index" class="btn btn-outline-secondary">Powrót do listy</a>
+            @if (User.Identity.IsAuthenticated && !isPurchased)
+            {
+                <form asp-controller="Wishlist" asp-action="AddToWishlist" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="gameId" value="@Model.Id" />
+                    @if (isInWishlist)
+                    {
+                        <button type="submit" class="btn btn-outline-danger" disabled title="Już na wishliście">
+                            <i class="bi bi-heart-fill"></i> Na wishliście
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-outline-danger" title="Dodaj do wishlisty">
+                            <i class="bi bi-heart"></i> Dodaj do wishlisty
+                        </button>
+                    }
+                </form>
+            }
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="d-grid gap-2 mb-3">
+                    @if (isPurchased)
+                    {
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle-fill"></i> Posiadasz tę grę
+                        </div>
+                        <a asp-controller="Library" asp-action="Index" class="btn btn-success btn-lg">
+                            <i class="bi bi-collection"></i> Przejdź do biblioteki
+                        </a>
+                    }
+                    else if (isInCart)
+                    {
+                        <div class="alert alert-info">
+                            <i class="bi bi-cart-check"></i> Gra jest już w koszyku
+                        </div>
+                        <a asp-controller="Cart" asp-action="Index" class="btn btn-primary btn-lg">
+                            <i class="bi bi-cart3"></i> Przejdź do koszyka
+                        </a>
+                    }
+                    else
+                    {
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="gameId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-cart-plus"></i> Dodaj do koszyka
+                                @if (hasPromotion)
+                                {
+                                    <span class="badge bg-success ms-2">PROMOCJA!</span>
+                                }
+                            </button>
+                        </form>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    <a asp-controller="Account" asp-action="Login">Zaloguj się</a>, aby kupić tę grę
+                    @if (hasPromotion)
+                    {
+                        <br><strong>Nie przegap promocji!</strong>
+                    }
+                </div>
+            }
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="d-grid gap-2 d-md-flex mt-3">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Edytuj
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Usuń
+                    </a>
+                    <a asp-controller="Admin" asp-action="CreatePromotion" class="btn btn-info">
+                        <i class="bi bi-tag"></i> Dodaj promocję
+                    </a>
+                </div>
+            }
+
+            <div class="mt-3">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Powrót do listy
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekcja Recenzji -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-chat-left-quote"></i> Recenzje
+                            @if (gameReviews.Any())
+                            {
+                                <span class="badge bg-primary">@gameReviews.Count</span>
+                                <span class="badge bg-warning text-dark">
+                                    @Math.Round(gameReviews.Average(r => r.Rating), 1) 
+                                    <i class="bi bi-star-fill"></i>
+                                </span>
+                            }
+                        </h5>
+                        @if (canReview)
+                        {
+                            @if (userReview == null)
+                            {
+                                <a asp-controller="Review" asp-action="Create" asp-route-gameId="@Model.Id" 
+                                   class="btn btn-sm btn-primary">
+                                    <i class="bi bi-pencil"></i> Dodaj recenzję
+                                </a>
+                            }
+                            else
+                            {
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-controller="Review" asp-action="Edit" asp-route-id="@userReview.Id" 
+                                       class="btn btn-outline-primary">
+                                        <i class="bi bi-pencil"></i> Edytuj moją
+                                    </a>
+                                    <form asp-controller="Review" asp-action="Delete" asp-route-id="@userReview.Id" 
+                                          method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger"
+                                                onclick="return confirm('Czy na pewno usunąć?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (!gameReviews.Any())
+                    {
+                        <p class="text-muted text-center py-4">
+                            <i class="bi bi-inbox"></i> Brak recenzji. 
+                            @if (canReview)
+                            {
+                                <a asp-controller="Review" asp-action="Create" asp-route-gameId="@Model.Id">
+                                    Bądź pierwszy!
+                                </a>
+                            }
+                        </p>
+                    }
+                    else
+                    {
+                        @foreach (var review in gameReviews)
+                        {
+                            <div class="border-bottom pb-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="mb-1">@review.Title</h6>
+                                        <div class="mb-2">
+                                            <span class="text-warning">
+                                                @for (int i = 0; i < review.Rating; i++)
+                                                {
+                                                    <i class="bi bi-star-fill"></i>
+                                                }
+                                                @for (int i = review.Rating; i < 5; i++)
+                                                {
+                                                    <i class="bi bi-star"></i>
+                                                }
+                                            </span>
+                                            <span class="ms-2 text-muted small">@review.Rating/5</span>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">@review.CreatedAt.ToString("dd.MM.yyyy")</small>
+                                </div>
+                                <p class="mb-2">@review.Content</p>
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">
+                                        <strong>@review.User.Username</strong>
+                                        @if (review.IsVerifiedPurchase)
+                                        {
+                                            <span class="badge bg-success ms-2">
+                                                <i class="bi bi-check-circle-fill"></i> Verified Purchase
+                                            </span>
+                                        }
+                                    </small>
+                                    @if (User.Identity.IsAuthenticated && userId == review.UserId)
+                                    {
+                                        <small>
+                                            <a asp-controller="Review" asp-action="Edit" asp-route-id="@review.Id" 
+                                               class="text-primary">Edytuj</a>
+                                        </small>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

@@ -1,0 +1,131 @@
+@model mist.Models.Cart
+@{
+    ViewData["Title"] = "Finalizacja zakupu";
+}
+
+<div class="container">
+    <h1 class="mb-4">
+        <i class="bi bi-credit-card"></i> Finalizacja zakupu
+    </h1>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Podsumowanie zamówienia</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="row border-bottom py-3 align-items-center">
+                            <div class="col-md-2">
+                                @if (!string.IsNullOrEmpty(item.Game.ImageUrl))
+                                {
+                                    <img src="@item.Game.ImageUrl" class="img-fluid rounded" alt="@item.Game.Title">
+                                }
+                            </div>
+                            <div class="col-md-7">
+                                <h5 class="mb-1">@item.Game.Title</h5>
+                                <p class="text-muted mb-0 small">@item.Game.Genre • @item.Game.Developer</p>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <h5 class="mb-0 text-primary">@item.Price.ToString("C")</h5>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Informacje o płatności</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> <strong>Uwaga:</strong> To jest wersja demonstracyjna. 
+                        Żadne prawdziwe płatności nie są przetwarzane.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-person"></i> Imię i nazwisko</label>
+                        <input type="text" class="form-control" value="@User.Identity.Name" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-envelope"></i> Email</label>
+                        <input type="email" class="form-control" value="@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value" readonly>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="acceptTerms" required>
+                        <label class="form-check-label" for="acceptTerms">
+                            Akceptuję <a href="#">regulamin</a> i <a href="#">politykę prywatności</a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Podsumowanie płatności</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Liczba produktów:</span>
+                        <strong>@Model.ItemCount</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Kwota netto:</span>
+                        <span>@Model.TotalAmount.ToString("C")</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5>Do zapłaty:</h5>
+                        <h5 class="text-success">@Model.TotalAmount.ToString("C")</h5>
+                    </div>
+
+                    <form asp-action="ProcessCheckout" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg" id="confirmPurchase" disabled>
+                                <i class="bi bi-check-circle"></i> Potwierdź zakup
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Wróć do koszyka
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h6><i class="bi bi-shield-check"></i> Bezpieczeństwo</h6>
+                    <ul class="small text-muted mb-0">
+                        <li>Szyfrowane połączenie SSL</li>
+                        <li>Natychmiastowy dostęp do gier</li>
+                        <li>Wsparcie techniczne 24/7</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<script>
+    document.getElementById('acceptTerms').addEventListener('change', function() {
+        document.getElementById('confirmPurchase').disabled = !this.checked;
+    });
+</script>

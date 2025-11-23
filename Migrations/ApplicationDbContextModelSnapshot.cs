@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mist.Data;
 
@@ -16,19 +15,15 @@ namespace mist.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
 
             modelBuilder.Entity("GameUser", b =>
                 {
                     b.Property<int>("OwnedGamesId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("OwnersId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("OwnedGamesId", "OwnersId");
 
@@ -37,51 +32,100 @@ namespace mist.Migrations
                     b.ToTable("GameUser");
                 });
 
+            modelBuilder.Entity("mist.Models.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("mist.Models.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("mist.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Developer")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Genre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Publisher")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -91,52 +135,108 @@ namespace mist.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 10, 27, 12, 44, 45, 333, DateTimeKind.Local).AddTicks(7456),
-                            Description = "Futurystyczna gra RPG w otwartym świecie Night City",
-                            Developer = "CD Projekt Red",
+                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 300, DateTimeKind.Utc),
+                            Description = "Futurystyczna gra RPG w otwartym świecie Day City",
+                            Developer = "VHS Projekt Green",
                             Genre = "RPG",
                             ImageUrl = "/images/cyberpunk.jpg",
                             IsActive = true,
                             Price = 199.99m,
-                            Publisher = "CD Projekt",
+                            Publisher = "VHS Projekt",
                             ReleaseDate = new DateTime(2020, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Cyberpunk 2077"
+                            Title = "Cyberpunk 2137"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 10, 27, 12, 44, 45, 339, DateTimeKind.Local).AddTicks(9186),
-                            Description = "Epicka przygoda Geralta z Rivii",
-                            Developer = "CD Projekt Red",
+                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 306, DateTimeKind.Utc),
+                            Description = "Epicka przygoda Gerwazego z Rumunii",
+                            Developer = "VHS Projekt Green",
                             Genre = "RPG",
                             ImageUrl = "/images/witcher3.jpg",
                             IsActive = true,
                             Price = 129.99m,
-                            Publisher = "CD Projekt",
+                            Publisher = "VHS Projekt",
                             ReleaseDate = new DateTime(2015, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "The Witcher 3"
+                            Title = "Wichur 3 Dziki Zgon"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2025, 10, 31, 23, 6, 0, 312, DateTimeKind.Utc),
+                            Description = "Zejdź w głąb królestwa Hallownest",
+                            Developer = "Team Mirabelle",
+                            Genre = "Metroidvania",
+                            ImageUrl = "/images/hollowknight.jpg",
+                            IsActive = true,
+                            Price = 19.99m,
+                            Publisher = "Team Mirabelle",
+                            ReleaseDate = new DateTime(2017, 2, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Holluw Knuht"
                         });
+                });
+
+            modelBuilder.Entity("mist.Models.Promotion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DiscountType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("Promotions");
                 });
 
             modelBuilder.Entity("mist.Models.Purchase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("GameId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("PricePaid")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -147,33 +247,75 @@ namespace mist.Migrations
                     b.ToTable("Purchases");
                 });
 
+            modelBuilder.Entity("mist.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsVerifiedPurchase")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("UserId", "GameId")
+                        .IsUnique();
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("mist.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -184,6 +326,31 @@ namespace mist.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("mist.Models.WishlistItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("UserId", "GameId")
+                        .IsUnique();
+
+                    b.ToTable("WishlistItems");
                 });
 
             modelBuilder.Entity("GameUser", b =>
@@ -199,6 +366,47 @@ namespace mist.Migrations
                         .HasForeignKey("OwnersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("mist.Models.Cart", b =>
+                {
+                    b.HasOne("mist.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("mist.Models.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("mist.Models.CartItem", b =>
+                {
+                    b.HasOne("mist.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("mist.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("mist.Models.Promotion", b =>
+                {
+                    b.HasOne("mist.Models.Game", "Game")
+                        .WithMany("Promotions")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("mist.Models.Purchase", b =>
@@ -220,14 +428,67 @@ namespace mist.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("mist.Models.Review", b =>
+                {
+                    b.HasOne("mist.Models.Game", "Game")
+                        .WithMany("Reviews")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("mist.Models.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("mist.Models.WishlistItem", b =>
+                {
+                    b.HasOne("mist.Models.Game", "Game")
+                        .WithMany("WishlistItems")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("mist.Models.User", "User")
+                        .WithMany("WishlistItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("mist.Models.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
             modelBuilder.Entity("mist.Models.Game", b =>
                 {
+                    b.Navigation("Promotions");
+
                     b.Navigation("Purchases");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("WishlistItems");
                 });
 
             modelBuilder.Entity("mist.Models.User", b =>
                 {
                     b.Navigation("Purchases");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("WishlistItems");
                 });
 #pragma warning restore 612, 618
         }

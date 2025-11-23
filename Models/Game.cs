@@ -24,10 +24,51 @@ namespace mist.Models
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
         public bool IsActive { get; set; } = true;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        
+        [System.ComponentModel.DataAnnotations.Schema.DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
+        public DateTime CreatedAt { get; set; }
 
         // Relacje
         public virtual ICollection<User> Owners { get; set; }
         public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual ICollection<Promotion> Promotions { get; set; }
+        public virtual ICollection<WishlistItem> WishlistItems { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        // Obliczenia - cena z uwzględnieniem aktywnej promocji
+        public decimal GetCurrentPrice()
+        {
+            var activePromotion = Promotions?
+                .FirstOrDefault(p => p.IsValidNow());
+
+            if (activePromotion != null)
+            {
+                return activePromotion.CalculateDiscountedPrice(Price);
+            }
+
+            return Price;
+        }
+
+        public Promotion GetActivePromotion()
+        {
+            return Promotions?.FirstOrDefault(p => p.IsValidNow());
+        }
+
+        public bool HasActivePromotion()
+        {
+            return GetActivePromotion() != null;
+        }
+
+        public decimal GetAverageRating()
+            {
+                if (Reviews == null || !Reviews.Any())
+                    return 0;
+                return (decimal)Reviews.Average(r => r.Rating);
+            }
+
+        public int GetReviewCount()
+            {
+                return Reviews?.Count ?? 0;
+            }
     }
 }

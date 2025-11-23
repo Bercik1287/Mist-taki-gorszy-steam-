@@ -1,0 +1,105 @@
+@model IEnumerable<mist.Models.Purchase>
+@{
+    ViewData["Title"] = "Historia zakupów";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-receipt"></i> Historia zakupów</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i> Wróć do biblioteki
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <h4>Brak historii zakupów</h4>
+            <p>Nie dokonałeś jeszcze żadnych zakupów.</p>
+            <a asp-controller="Games" asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-shop"></i> Przeglądaj gry
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="mb-3">
+            <p class="text-muted">
+                Łączna liczba zakupów: <strong>@Model.Count()</strong> | 
+                Łączna wartość: <strong>@Model.Sum(p => p.PricePaid).ToString("C")</strong>
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Data zakupu</th>
+                                <th>Gra</th>
+                                <th>Gatunek</th>
+                                <th>Cena zapłacona</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var purchase in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="bi bi-calendar-event"></i> 
+                                        @purchase.PurchaseDate.ToString("dd.MM.yyyy HH:mm")
+                                    </td>
+                                    <td>
+                                        <strong>@purchase.Game.Title</strong>
+                                        <br>
+                                        <small class="text-muted">@purchase.Game.Developer</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">@purchase.Game.Genre</span>
+                                    </td>
+                                    <td>
+                                        <strong class="text-success">@purchase.PricePaid.ToString("C")</strong>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-controller="Games" asp-action="Details" asp-route-id="@purchase.GameId" 
+                                               class="btn btn-outline-primary">
+                                                <i class="bi bi-info-circle"></i> Szczegóły
+                                            </a>
+                                            <button class="btn btn-outline-success">
+                                                <i class="bi bi-play-fill"></i> Uruchom
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Suma:</strong></td>
+                                <td colspan="2">
+                                    <strong class="text-success">@Model.Sum(p => p.PricePaid).ToString("C")</strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5><i class="bi bi-info-circle"></i> Informacje</h5>
+                <ul class="mb-0">
+                    <li>Historia obejmuje wszystkie Twoje zakupy</li>
+                    <li>Wszystkie gry są dostępne do pobrania w bibliotece</li>
+                    <li>Ceny mogą się różnić od aktualnych cen w sklepie</li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

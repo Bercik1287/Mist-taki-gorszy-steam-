@@ -24,5 +24,7 @@ namespace mist.Models
         // Relacje
         public virtual ICollection<Game> OwnedGames { get; set; }
         public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual ICollection<WishlistItem> WishlistItems { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }
